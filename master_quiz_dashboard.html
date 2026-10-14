@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Testing - Master Quiz Dashboard (Weeks 1-12)</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Sidebar Styling */
+        .sidebar {
+            width: 270px;
+            background-color: #0f172a;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            flex-shrink: 0;
+        }
+        .sidebar-header {
+            padding: 20px 16px;
+            font-size: 15px;
+            font-weight: bold;
+            background-color: #1e293b;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+            letter-spacing: 0.5px;
+        }
+        .nav-links {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 10px;
+        }
+        .nav-links::-webkit-scrollbar {
+            width: 5px;
+        }
+        .nav-links::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 5px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            text-align: left;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: Arial, sans-serif;
+        }
+        .nav-btn:hover {
+            background-color: #1e293b;
+            color: #fff;
+        }
+        .nav-btn.active {
+            background-color: var(--primary);
+            color: #fff;
+        }
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .week-section {
+            display: none;
+        }
+        .week-section.active {
+            display: block;
+        }
+        /* Question Card & UI Elements (Exact Week Styles) */
+        .question-card {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 12px;
+            color: #0f172a;
+            line-height: 1.5;
+        }
+        .options label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 14px;
+            line-height: 1.45;
+        }
+        .options label:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.2s;
+            font-family: Arial, sans-serif;
+        }
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+        .btn-reset {
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+            font-family: Arial, sans-serif;
+        }
+        .btn-reset:hover {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            display: none;
+        }
+        .correct { color: #166534; background-color: #dcfce7; border: 1px solid #bbf7d0; }
+        .incorrect { color: #991b1b; background-color: #fee2e2; border: 1px solid #fecaca; }
+        .feedback-text {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .explanation {
+            display: none;
+            margin-top: 10px;
+            padding: 12px 15px;
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            font-size: 13.5px;
+            color: #1e40af;
+            border-radius: 0 6px 6px 0;
+            line-height: 1.5;
+        }
+        /* Match Table Styling (Week 1) */
+        .match-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+        }
+        .match-table th, .match-table td {
+            border: 1px solid #cbd5e1;
+            padding: 10px 12px;
+            font-size: 13px;
+            vertical-align: top;
+        }
+        .match-table th {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            text-align: left;
+        }
+        /* Inline Graph Question Block (Week 2 & 4) */
+        .graph-inline-box {
+            background: #f8fafc;
+            border: 2px solid #3b82f6;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+        .graph-inline-box p {
+            text-align: left;
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-top: 0;
+        }
+        .local-img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 8px;
+            background: #ffffff;
+            margin: 15px auto;
+            display: block;
+            cursor: zoom-in;
+            transition: max-width 0.25s ease;
+        }
+        .local-img.zoomed {
+            max-width: 100%;
+            cursor: zoom-out;
+        }
+        .zoom-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-style: italic;
+        }
+        /* Code Box (Week 6 & 11) */
+        .code-box {
+            background: #f8fafc;
+            border: 2px solid var(--primary);
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #0f172a;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .context-intro {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            color: #1d4ed8;
+            font-size: 14px;
+            margin-bottom: 10px;
+            white-space: normal;
+        }
+        /* Context Box (Week 5) */
+        .context-box {
+            background: #f8fafc;
+            border: 2px solid var(--primary);
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #1d4ed8;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">📚 Testing Master Dashboard</div>
+        <div class="nav-links" id="navLinks">
+            <button class="nav-btn active" data-week="1" onclick="switchWeek(1, this)">Week 1: Software Testing Match Terms</button><button class="nav-btn" data-week="2" onclick="switchWeek(2, this)">Week 2: Graph Structural</button><button class="nav-btn" data-week="3" onclick="switchWeek(3, this)">Week 3: Data Flow</button><button class="nav-btn" data-week="4" onclick="switchWeek(4, this)">Week 4: Design Integration</button><button class="nav-btn" data-week="5" onclick="switchWeek(5, this)">Week 5: Logic Coverage</button><button class="nav-btn" data-week="6" onclick="switchWeek(6, this)">Week 6: Advanced Logic</button><button class="nav-btn" data-week="7" onclick="switchWeek(7, this)">Week 7: Input Space Partitioning</button><button class="nav-btn" data-week="8" onclick="switchWeek(8, this)">Week 8: Mutation & RegEx</button><button class="nav-btn" data-week="9" onclick="switchWeek(9, this)">Week 9: Integration Mutation</button><button class="nav-btn" data-week="10" onclick="switchWeek(10, this)">Week 10: Web & OO Graphs</button><button class="nav-btn" data-week="11" onclick="switchWeek(11, this)">Week 11: Symbolic & Concolic</button><button class="nav-btn" data-week="12" onclick="switchWeek(12, this)">Week 12: Non-Functional & OO</button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="container">
+            <h1 id="pageTitle">Software Testing Match Terms Quiz</h1>
+            <div class="subtitle" id="pageSubtitle">Interactive matching practice quiz for fundamental definitions and concepts.</div>
+
+            
+        <!-- WEEK 1 -->
+        <div id="week1" class="week-section active">
+            <table class="match-table">
+<thead>
+<tr>
+<th style="width: 45%;">Terms (Left Column)</th>
+<th style="width: 55%;">Definitions / Matches (Right Column)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(1) Regression testing</td>
+<td>(a) Done to evaluate the user interface, aesthetics etc.</td>
+</tr>
+<tr>
+<td>(2) Test automation with JUnit</td>
+<td>(b) Represents a software artifact or its abstraction</td>
+</tr>
+<tr>
+<td>(3) Black box testing</td>
+<td>(c) It consists of inputs &amp; expected outputs</td>
+</tr>
+<tr>
+<td>(4) Usability testing</td>
+<td>(d) A rule or a collection of rules that impose test requirements on test cases.</td>
+</tr>
+<tr>
+<td>(5) Test case</td>
+<td>(e) To find errors in software.</td>
+</tr>
+<tr>
+<td>(6) Reachability</td>
+<td>(f) Every test case that satisfies C1 also satisfies C2.</td>
+</tr>
+<tr>
+<td>(7) Test case models</td>
+<td>(g) The location(s) in the program that contain the fault must be reached.</td>
+</tr>
+<tr>
+<td>(8) Test requirement</td>
+<td>(h) Testing modified software for new errors.</td>
+</tr>
+<tr>
+<td>(9) Criterion C1 subsumes C2</td>
+<td>(i) Usability, performance and stress testing. [Note: matches Black box or Usability scope depending on context]</td>
+</tr>
+<tr>
+<td>(10) Use of testing</td>
+<td>(j) Command: <code>assertTrue(boolean)</code></td>
+</tr>
+</tbody>
+</table>
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="h">
+<div class="question-title">1. Regression testing matches with:</div>
+<div class="options">
+<label><input name="w1_q1" type="radio" value="a"/> with (a)</label>
+<label><input name="w1_q1" type="radio" value="c"/> with (c)</label>
+<label><input name="w1_q1" type="radio" value="h"/> with (h)</label>
+<label><input name="w1_q1" type="radio" value="g"/> with (g)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Regression testing involves testing modified software to ensure that changes haven't introduced new errors[cite: 5]. Match: <strong>(h)</strong>.</div>
+</div><div class="question-card" data-correct="j">
+<div class="question-title">2. Test automation with JUnit matches with:</div>
+<div class="options">
+<label><input name="w1_q2" type="radio" value="b"/> with (b)</label>
+<label><input name="w1_q2" type="radio" value="d"/> with (d)</label>
+<label><input name="w1_q2" type="radio" value="h"/> with (h)</label>
+<label><input name="w1_q2" type="radio" value="j"/> with (j)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> JUnit is a popular framework for automated unit testing in Java, often using assertion commands like <code>assertTrue(boolean)</code>[cite: 5]. Match: <strong>(j)</strong>.</div>
+</div><div class="question-card" data-correct="i">
+<div class="question-title">3. Black box testing matches with:</div>
+<div class="options">
+<label><input name="w1_q3" type="radio" value="c"/> with (c)</label>
+<label><input name="w1_q3" type="radio" value="i"/> with (i)</label>
+<label><input name="w1_q3" type="radio" value="a"/> with (a)</label>
+<label><input name="w1_q3" type="radio" value="f"/> with (f)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Black box testing perspectives include functional and non-functional tests such as usability, performance, and stress testing[cite: 5]. Match: <strong>(i)</strong>.</div>
+</div><div class="question-card" data-correct="a">
+<div class="question-title">4. Usability testing matches with:</div>
+<div class="options">
+<label><input name="w1_q4" type="radio" value="a"/> with (a)</label>
+<label><input name="w1_q4" type="radio" value="b"/> with (b)</label>
+<label><input name="w1_q4" type="radio" value="c"/> with (c)</label>
+<label><input name="w1_q4" type="radio" value="d"/> with (d)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Usability testing is done specifically to evaluate the user interface, user experience, and overall aesthetics[cite: 5]. Match: <strong>(a)</strong>.</div>
+</div><div class="question-card" data-correct="c">
+<div class="question-title">5. Test case matches with:</div>
+<div class="options">
+<label><input name="w1_q5" type="radio" value="a"/> with (a)</label>
+<label><input name="w1_q5" type="radio" value="c"/> with (c)</label>
+<label><input name="w1_q5" type="radio" value="e"/> with (e)</label>
+<label><input name="w1_q5" type="radio" value="g"/> with (g)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A formal test case consists of inputs and expected outputs[cite: 5]. Match: <strong>(c)</strong>.</div>
+</div><div class="question-card" data-correct="g">
+<div class="question-title">6. Reachability matches with:</div>
+<div class="options">
+<label><input name="w1_q6" type="radio" value="c"/> with (c)</label>
+<label><input name="w1_q6" type="radio" value="e"/> with (e)</label>
+<label><input name="w1_q6" type="radio" value="g"/> with (g)</label>
+<label><input name="w1_q6" type="radio" value="i"/> with (i)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> In structural coverage and testing conditions, reachability means the specific location(s) in the program containing the fault must be reached by test execution[cite: 5]. Match: <strong>(g)</strong>.</div>
+</div><div class="question-card" data-correct="b">
+<div class="question-title">7. Test case models matches with:</div>
+<div class="options">
+<label><input name="w1_q7" type="radio" value="b"/> with (b)</label>
+<label><input name="w1_q7" type="radio" value="d"/> with (d)</label>
+<label><input name="w1_q7" type="radio" value="f"/> with (f)</label>
+<label><input name="w1_q7" type="radio" value="h"/> with (h)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Test case models represent software artifacts or their structural abstractions[cite: 6]. Match: <strong>(b)</strong>.</div>
+</div><div class="question-card" data-correct="d">
+<div class="question-title">8. Test requirement matches with:</div>
+<div class="options">
+<label><input name="w1_q8" type="radio" value="b"/> with (b)</label>
+<label><input name="w1_q8" type="radio" value="d"/> with (d)</label>
+<label><input name="w1_q8" type="radio" value="f"/> with (f)</label>
+<label><input name="w1_q8" type="radio" value="i"/> with (i)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A test requirement is defined as a rule or a collection of rules that impose specific test requirements on test cases[cite: 6]. Match: <strong>(d)</strong>.</div>
+</div><div class="question-card" data-correct="f">
+<div class="question-title">9. Criterion C1 subsumes C2 matches with:</div>
+<div class="options">
+<label><input name="w1_q9" type="radio" value="j"/> with (j)</label>
+<label><input name="w1_q9" type="radio" value="i"/> with (i)</label>
+<label><input name="w1_q9" type="radio" value="h"/> with (h)</label>
+<label><input name="w1_q9" type="radio" value="f"/> with (f)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Subsumption means that every test case that satisfies coverage criterion C1 also satisfies coverage criterion C2[cite: 6]. Match: <strong>(f)</strong>.</div>
+</div><div class="question-card" data-correct="e">
+<div class="question-title">10. Use of testing matches with:</div>
+<div class="options">
+<label><input name="w1_q10" type="radio" value="c"/> with (c)</label>
+<label><input name="w1_q10" type="radio" value="e"/> with (e)</label>
+<label><input name="w1_q10" type="radio" value="f"/> with (f)</label>
+<label><input name="w1_q10" type="radio" value="j"/> with (j)</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> The fundamental objective and primary use of software testing is to find errors in software[cite: 6]. Match: <strong>(e)</strong>.</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 2 -->
+        <div id="week2" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="1">
+<div class="question-title">1. Which of the following best represents an edge e = (u, v) being reachable in a graph?</div>
+<div class="options">
+<label><input name="w2_q1" type="radio" value="0"/> Edge e = (u, v) is reachable if there is a path from one of the initial vertices to the vertex u.</label>
+<label><input name="w2_q1" type="radio" value="1"/> Edge e = (u, v) is reachable if there is a path from one of the initial vertices to the vertex u and then to the vertex v via the edge e.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> An edge is reachable if a test path starts at an initial vertex, reaches node $u$, and then traverses edge $(u, v)$ to reach node $v$[cite: 7].</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">2. A path that begins in one of the initial vertices and ends in a final vertex is called as .........</div>
+<div class="options">
+<label><input name="w2_q2" type="radio" value="0"/> A feasible test path.</label>
+<label><input name="w2_q2" type="radio" value="1"/> An infeasible test path.</label>
+<label><input name="w2_q2" type="radio" value="2"/> A test path that tours the final vertex.</label>
+<label><input name="w2_q2" type="radio" value="3"/> A test path.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> By formal graph-testing definition, any path starting at an initial node and terminating at a final node is a test path[cite: 7].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">3. Different test cases can execute one single test path.</div>
+<div class="options">
+<label><input name="w2_q3" type="radio" value="0"/> True</label>
+<label><input name="w2_q3" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Multiple distinct test cases with different input datasets can follow the exact same control flow sequence[cite: 7].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">4. A structural coverage criterion on graph is described by which of the following terms?</div>
+<div class="options">
+<label><input name="w2_q4" type="radio" value="0"/> It is defined on a graph model of the software artifact to be tested, purely in terms of vertices and edges.</label>
+<label><input name="w2_q4" type="radio" value="1"/> It is defined on a graph model of the software artifact to be tested by using as many details of the artifact that are available in the graph.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Structural coverage criteria on graphs are defined purely in terms of the graph's vertices and edges[cite: 10].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">5. How are test requirements defined and met in graphs-based structural coverage criteria?</div>
+<div class="options">
+<label><input name="w2_q5" type="radio" value="0"/> Test requirements are defined as properties of test paths and they are met by using the same test paths.</label>
+<label><input name="w2_q5" type="radio" value="1"/> Test requirements are defined as properties of test paths and they are met by using test paths that satisfy each test requirement.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Test requirements specify properties of test paths, and test paths are selected to satisfy each requirement[cite: 7].</div>
+</div><div class="graph-inline-box">
+<p>For the next five questions, consider the given graph:</p>
+<img alt="Control Flow Graph" class="local-img" id="graphImg" onclick="toggleZoom(this)" onerror="handleImgError(this, 'week2.png')" src="week2.png"/>
+<div class="zoom-hint">💡 Click on the image to expand/zoom in.</div>
+<div id="fallback-msg" style="display:none; color: #b91c1c; font-size: 13px; margin: 10px 0;">
+                ⚠️ Could not load <code>week2.png</code>. Make sure it is saved in the same folder as this HTML file.
+            </div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">6. There are test paths that achieve node coverage but not edge coverage.</div>
+<div class="options">
+<label><input name="w2_q6" type="radio" value="0"/> True</label>
+<label><input name="w2_q6" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> False. Edge coverage subsumes node coverage, meaning any suite satisfying edge coverage automatically satisfies node coverage[cite: 8].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">7. Which of the following test paths achieves edge coverage?</div>
+<div class="options">
+<label><input name="w2_q7" type="radio" value="0"/> Test path [1, 2, 3, 2, 4]</label>
+<label><input name="w2_q7" type="radio" value="1"/> Test paths [1, 2, 4] and [1, 2, 2, 2]</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Path [1, 2, 3, 2, 4] traverses all four edges: (1,2), (2,3), (3,2), and (2,4), thereby achieving complete edge coverage[cite: 8].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">8. State yes or no: The edge pair [3, 2, 3] is toured by the test path [1, 2, 3, 2, 4].</div>
+<div class="options">
+<label><input name="w2_q8" type="radio" value="0"/> Yes</label>
+<label><input name="w2_q8" type="radio" value="1"/> No</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> No. The path [1, 2, 3, 2, 4] visits node 3 once and exits to 4, so it does not tour the full edge pair sequence [3, 2, 3][cite: 8].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">9. The test paths [1, 2, 4], [1, 2, 3, 2, 3, 2, 4] achieves which of the following coverage criteria?</div>
+<div class="options">
+<label><input name="w2_q9" type="radio" value="0"/> Node coverage only.</label>
+<label><input name="w2_q9" type="radio" value="1"/> Node and edge coverage only.</label>
+<label><input name="w2_q9" type="radio" value="2"/> Edge pair coverage.</label>
+<label><input name="w2_q9" type="radio" value="3"/> Edge coverage only.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> This set of test paths successfully covers all length-2 paths (edge pairs) through the graph[cite: 9].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">10. State yes or no: The test path [1, 2, 3, 2, 4] achieves edge coverage.</div>
+<div class="options">
+<label><input name="w2_q10" type="radio" value="0"/> Yes</label>
+<label><input name="w2_q10" type="radio" value="1"/> No</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Yes, because it travels across all individual edges present in the graph[cite: 9].</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 3 -->
+        <div id="week3" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="1">
+<div class="question-title">1. Consider a variable <code>num</code> of type <code>float</code>. Suppose a particular method has a statement <code>if(log(num) &gt;= 0.72)</code>, will it be considered a definition of <code>num</code> or a use of <code>num</code>?</div>
+<div class="options">
+<label><input name="w3_q1" type="radio" value="0"/> The statement is a definition of <code>num</code>.</label>
+<label><input name="w3_q1" type="radio" value="1"/> The statement is a use of <code>num</code>.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Reading or evaluating the value of a variable in an expression or condition (like inside log(num)) is a <em>use</em> of the variable, not a definition (assignment/modification).</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">2. Consider a variable <code>count</code> of type <code>int</code>. Suppose there is a statement of the type <code>count++</code>; which of the following statements are correct regarding the data flow definition of <code>count</code>?</div>
+<div class="options">
+<label><input name="w3_q2" type="radio" value="0"/> The statement is a definition of <code>count</code>.</label>
+<label><input name="w3_q2" type="radio" value="1"/> The statement is a use of <code>count</code>.</label>
+<label><input name="w3_q2" type="radio" value="2"/> The statement is both a definition and use of <code>count</code>.</label>
+<label><input name="w3_q2" type="radio" value="3"/> None of the above holds true.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> The expression <code>count++</code> first reads the existing value of <code>count</code> (making it a <em>use</em>) and then increments and stores the new value back into <code>count</code> (making it a <em>definition</em>).</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">3. State true or false: For every variable in a particular program, every definition of a variable will always reach a use.</div>
+<div class="options">
+<label><input name="w3_q3" type="radio" value="0"/> True</label>
+<label><input name="w3_q3" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> False. Definitions can be "killed" or overwritten before ever reaching any use, or they might occur in dead code blocks that never execute.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">4. Which of the following best defines a du-path for a variable x?</div>
+<div class="options">
+<label><input name="w3_q4" type="radio" value="0"/> A du-path is a simple path from a definition of x to a use of x without any further definitions of x in-between.</label>
+<label><input name="w3_q4" type="radio" value="1"/> A du-path is a path from a definition of x to a use of x without any further definitions of x in-between.</label>
+<label><input name="w3_q4" type="radio" value="2"/> A du-path is a simple path from a definition of x to a use of x without any futher uses of x in-between.</label>
+<label><input name="w3_q4" type="radio" value="3"/> A du-path is a path from a definition of x to a use of x without any further uses of x in-between.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A definition-use (du) path is a <em>simple path</em> (no nodes repeated) starting at a definition of a variable and ending at a use of that variable, which is def-clear with respect to that variable in-between.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">5. State yes or no: We group du-paths with respect to a variable by its uses.</div>
+<div class="options">
+<label><input name="w3_q5" type="radio" value="0"/> Yes</label>
+<label><input name="w3_q5" type="radio" value="1"/> No</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> No. In data flow testing, du-paths are generally grouped with respect to variables by their <em>definitions</em> (forming def-use pairs originating from each definition).</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">6. Which of the following properties should a side-trip taken to cover a du-path satisfy?</div>
+<div class="options">
+<label><input name="w3_q6" type="radio" value="0"/> Side trips should be use clear.</label>
+<label><input name="w3_q6" type="radio" value="1"/> Side trips should be def clear.</label>
+<label><input name="w3_q6" type="radio" value="2"/> Side trips should be def and use clear.</label>
+<label><input name="w3_q6" type="radio" value="3"/> Side trips need not satisfy any condition.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A side-trip must be <em>def-clear</em> with respect to the variable so that the original definition is not accidentally redefined or killed during the side trip.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">7. Is it true that prime paths coverage (a structural coverage criterion that we saw earlier) subsumes all-du-paths-coverage?</div>
+<div class="options">
+<label><input name="w3_q7" type="radio" value="0"/> True</label>
+<label><input name="w3_q7" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Prime path coverage is a more rigorous structural coverage criterion that structurally encompasses and subsumes data-flow criteria like all-du-paths coverage.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">8. Which of the following statements are true when it comes to comparing traditional source code coverage criteria with graph based coverage criteria?</div>
+<div class="options">
+<label><input name="w3_q8" type="radio" value="0"/> Node and statement coverage are the same, edge and branch coverage are the same.</label>
+<label><input name="w3_q8" type="radio" value="1"/> Edge and decision coverage are the same.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> In control flow testing, source statements map directly to graph nodes (making node and statement coverage equivalent), and code branches/decisions map to graph edges (making edge and branch coverage equivalent).</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">9. Which of the following defines a linearly independent path of execution in a control flow graph?</div>
+<div class="options">
+<label><input name="w3_q9" type="radio" value="0"/> A path in which there are no branches.</label>
+<label><input name="w3_q9" type="radio" value="1"/> A path which does not contain other paths within it.</label>
+<label><input name="w3_q9" type="radio" value="2"/> A path that represents structural complexity of a program.</label>
+<label><input name="w3_q9" type="radio" value="3"/> A path within a connected component.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A linearly independent path introduces at least one new edge or set of processing instructions not included in any other independent paths, meaning it does not contain other paths within it.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">10. State true or false: An algorithm for enumerating prime paths works by enumerating all simple paths in order of increasing length and stops when there are no more such paths.</div>
+<div class="options">
+<label><input name="w3_q10" type="radio" value="0"/> True</label>
+<label><input name="w3_q10" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. The standard prime path generation algorithm systematically finds all simple paths of length $k$, extends them to length $k+1$ where possible, and stops when no further simple paths can be lengthened or added.</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 4 -->
+        <div id="week4" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="2">
+<div class="question-title">1. Which of the following is a graph model used for design integration testing?</div>
+<div class="options">
+<label><input name="w4_q1" type="radio" value="0"/> Control flow graph.</label>
+<label><input name="w4_q1" type="radio" value="1"/> Data flow graph.</label>
+<label><input name="w4_q1" type="radio" value="2"/> Call graph.</label>
+<label><input name="w4_q1" type="radio" value="3"/> Design graph.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A call graph models method invocation relationships across classes or modules, making it the primary graph model used for design integration testing[cite: 11].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">2. In design integration, when a caller method m₁ calls a callee method m₂, the variables from m₁ that are used in the call are called as ...........</div>
+<div class="options">
+<label><input name="w4_q2" type="radio" value="0"/> Actual parameters.</label>
+<label><input name="w4_q2" type="radio" value="1"/> Formal parameters.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> The expressions or variables passed by the caller method during an invocation are known as actual parameters[cite: 11].</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">3. In design integration, when two methods make queries and updates to an external database, which coupling definition does it represent?</div>
+<div class="options">
+<label><input name="w4_q3" type="radio" value="0"/> Message passing coupling.</label>
+<label><input name="w4_q3" type="radio" value="1"/> Shared data coupling.</label>
+<label><input name="w4_q3" type="radio" value="2"/> Parameter coupling.</label>
+<label><input name="w4_q3" type="radio" value="3"/> External device coupling.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Interacting with external systems, files, or databases shared across components is categorized under external device coupling[cite: 11].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">4. A simple path from the last definition to the first use of a coupling variable is called as .........</div>
+<div class="options">
+<label><input name="w4_q4" type="radio" value="0"/> A du-path.</label>
+<label><input name="w4_q4" type="radio" value="1"/> A coupling du-path.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A coupling du-path specifically tracks definition-use relationships crossing unit or method boundaries for coupling variables[cite: 11].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">5. State true or false: Are control flow graphs representing code the same as finite state machines that represent the same code.</div>
+<div class="options">
+<label><input name="w4_q5" type="radio" value="0"/> True</label>
+<label><input name="w4_q5" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> False. Control flow graphs capture statement-level control flow, whereas finite state machines model system states and event-driven transitions, which are fundamentally different graph abstractions[cite: 11].</div>
+</div><div class="graph-inline-box">
+<p>
+                Consider the graph below that depicts the calls to file handler methods open(), close(), read() and write(). Any procedure/method that uses these methods has to satisfy the following sequencing constraints:<br/>
+                (1) An open() must be executed before every write();<br/>
+                (2) An open() must be executed before every close();<br/>
+                (3) A write() may not be executed after a close() unless there is an open() in between;<br/>
+                (4) A write() should be executed before every close().
+            </p>
+<img alt="File Handler Sequencing Graph" class="local-img" id="graphImg" onclick="toggleZoom(this)" onerror="handleImgError(this, 'week4.png')" src="week4.png"/>
+<div class="zoom-hint">💡 Click on the image to expand/zoom in.</div>
+<div id="fallback-msg" style="display:none; color: #b91c1c; font-size: 13px; margin: 10px 0;">
+                ⚠️ Could not load <code>week4.png</code>. Make sure it is saved in the same folder as this HTML file.
+            </div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">6. Which of the following is true with reference to the graph satisfying the sequencing constraints?</div>
+<div class="options">
+<label><input name="w4_q6" type="radio" value="0"/> All the sequencing constraints are satisfied.</label>
+<label><input name="w4_q6" type="radio" value="1"/> Constraints (1) and (2) are satisfied but (3) and (4) are not.</label>
+<label><input name="w4_q6" type="radio" value="2"/> Constraints (1), (2) and (3) are satisfied but (4) is not.</label>
+<label><input name="w4_q6" type="radio" value="3"/> All constraints are violated.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Analysis of the graph shows that constraints (1), (2), and (3) are upheld across paths, while constraint (4) (requiring a write before every close) is not universally enforced[cite: 12].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">7. State true or false: The path (1,4,5,7) satisfies constraint (4).</div>
+<div class="options">
+<label><input name="w4_q7" type="radio" value="0"/> True</label>
+<label><input name="w4_q7" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> False. The path goes from open to read/close without a write operation, violating constraint (4) which states a write should be executed before close[cite: 12].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">8. State true or false: The path (1,2,3,7) satisfies all the constraints.</div>
+<div class="options">
+<label><input name="w4_q8" type="radio" value="0"/> True</label>
+<label><input name="w4_q8" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. This valid execution path properly sequences open, write, and close operations in compliance with all rules[cite: 12].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">9. State yes or no: Does the path (1,4,6,5,7) violate any of the constraints?</div>
+<div class="options">
+<label><input name="w4_q9" type="radio" value="0"/> Yes.</label>
+<label><input name="w4_q9" type="radio" value="1"/> No.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> No. This path respects the specified sequence of operations without breaking any defined constraints[cite: 12].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">10. State true or false: The path (1,4,6,4,6,5,7) satisfies all the constraints.</div>
+<div class="options">
+<label><input name="w4_q10" type="radio" value="0"/> Yes.</label>
+<label><input name="w4_q10" type="radio" value="1"/> No.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Yes. Repeated valid transitions (such as multiple writes between open and close) fully satisfy all constraints[cite: 12].</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 5 -->
+        <div id="week5" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="1">
+<div class="question-title">1. For a predicate with n clauses, how many test requirements suffice to achieve active clause coverage?</div>
+<div class="options">
+<label><input name="w5_q1" type="radio" value="0"/> n test requirements.</label>
+<label><input name="w5_q1" type="radio" value="1"/> n + 1 test requirements.</label>
+<label><input name="w5_q1" type="radio" value="2"/> n - 1 test requirements.</label>
+<label><input name="w5_q1" type="radio" value="3"/> 2n test requirements.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Active Clause Coverage (ACC) generally requires n + 1 test requirements (one pair for each clause where it evaluates to true and false while determining the predicate value)[cite: 13].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">2. State true or false: Correlated ICC does not make sense as the major clause does not determine the predicate.</div>
+<div class="options">
+<label><input name="w5_q2" type="radio" value="0"/> True</label>
+<label><input name="w5_q2" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. If the major clause does not determine the predicate value, correlation requirements cannot be met in Correlated ICC[cite: 13].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">3. For a predicate p and a clause c in p, if p<sub>c</sub> evaluates to false, then which of the following holds true?</div>
+<div class="options">
+<label><input name="w5_q3" type="radio" value="0"/> ACC criteria are infeasible for p with respect to c.</label>
+<label><input name="w5_q3" type="radio" value="1"/> ICC criteria are infeasible for p with respect to c.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> If p<sub>c</sub> evaluates to false identically, it means clause c can never determine the predicate value p, making ACC criteria infeasible[cite: 13].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">4. Which of the following represents a correct order of subsumption among logic coverage criteria?</div>
+<div class="options">
+<label><input name="w5_q4" type="radio" value="0"/> Combinatorial coverage → GACC → Clause coverage.</label>
+<label><input name="w5_q4" type="radio" value="1"/> Combinatorial coverage → GACC → Predicate coverage.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Combinatorial coverage (CC) is the strongest and subsumes GACC, which in turn subsumes weaker criteria like clause coverage[cite: 13].</div>
+</div><div class="context-box">
+            For the questions below, consider a predicate p = (a ∨ b) ∧ (c ∨ d). Answer the following questions with reference to applying logic coverage criteria.
+        </div><div class="question-card" data-correct="3">
+<div class="question-title">5. How many clauses are there in the predicate p?</div>
+<div class="options">
+<label><input name="w5_q5" type="radio" value="0"/> One.</label>
+<label><input name="w5_q5" type="radio" value="1"/> Two.</label>
+<label><input name="w5_q5" type="radio" value="2"/> Three.</label>
+<label><input name="w5_q5" type="radio" value="3"/> Four.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> The predicate has four individual clauses: a, b, c, and d[cite: 13].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">6. What is the value of p when a = b = d = True and c = False?</div>
+<div class="options">
+<label><input name="w5_q6" type="radio" value="0"/> True.</label>
+<label><input name="w5_q6" type="radio" value="1"/> False.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Plugging in the values evaluates the expression to True[cite: 13].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">7. For how many combinations of values of the various clauses, does the predicate p become false?</div>
+<div class="options">
+<label><input name="w5_q7" type="radio" value="0"/> Two.</label>
+<label><input name="w5_q7" type="radio" value="1"/> Four.</label>
+<label><input name="w5_q7" type="radio" value="2"/> Seven.</label>
+<label><input name="w5_q7" type="radio" value="3"/> Eight.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Out of 16 total combinations, p is true for 9 combinations and false for 7 combinations[cite: 13].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">8. Which of the following is p<sub>a</sub>, the predicate under which clause a determines p?</div>
+<div class="options">
+<label><input name="w5_q8" type="radio" value="0"/> p<sub>a</sub> = b ∧ (c ∨ d).</label>
+<label><input name="w5_q8" type="radio" value="1"/> p<sub>a</sub> = ¬b ∧ (c ∨ d).</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> For clause a to determine p, the term (c ∨ d) must be true, and b must be false (¬b) so that a controls the outcome of (a ∨ b)[cite: 13, 14].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">9. Which of the following is p<sub>c</sub>, the predicate under which clause c determines p?</div>
+<div class="options">
+<label><input name="w5_q9" type="radio" value="0"/> p<sub>c</sub> = ¬d ∧ (a ∨ b).</label>
+<label><input name="w5_q9" type="radio" value="1"/> p<sub>c</sub> = ¬d ∨ (a ∨ b).</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> For clause c to determine p, clause d must be false (¬d) and (a ∨ b) must be true[cite: 14].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">10. Which of the following sets represent the GACC pairs for clause a?</div>
+<div class="options">
+<label><input name="w5_q10" type="radio" value="0"/> The set {5, 6} × {13, 14}.</label>
+<label><input name="w5_q10" type="radio" value="2"/> The set {5, 6, 7} × {13, 14, 15}.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Based on the standard truth table mapping for GACC evaluation of clause a, the corresponding pair set is {5, 6, 7} × {13, 14, 15}[cite: 14].</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 6 -->
+        <div id="week6" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="0">
+<div class="question-title">1. Which of the following techniques are used to avoid using ACC criteria in logic based testing?</div>
+<div class="options">
+<label><input name="w6_q1" type="radio" value="0"/> Predicate transformation to eliminate multiple clauses.</label>
+<label><input name="w6_q1" type="radio" value="1"/> Predicate transformation to ensure ACC criteria becomes easier.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Predicate transformation is often employed to simplify complex expressions and eliminate multiple interacting clauses to avoid cumbersome ACC requirements[cite: 17].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">2. While generating logic-based test cases for guards in finite state machines, which of the following will an infeasible test requirement indicate?</div>
+<div class="options">
+<label><input name="w6_q2" type="radio" value="0"/> The predicates are incomplete.</label>
+<label><input name="w6_q2" type="radio" value="1"/> The predicates are inconsistent.</label>
+<label><input name="w6_q2" type="radio" value="2"/> There is an error in the model that the predicate is a part of.</label>
+<label><input name="w6_q2" type="radio" value="3"/> There is an error in the connectives of the predicates.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> In finite state machine guards, an infeasible test requirement typically signals an underlying error in the state model design[cite: 17].</div>
+</div><div class="code-box"><div class="context-intro">Answer the following questions for the method squared() below. The method is called with two input parameters x and y. The variable z is internal to the method.</div>public string squared (int x, int y)
+{
+    boolean z;
+    if (x &gt; y)
+        z = true;
+    else
+        z = false;
+    
+    if (z &amp;&amp; (x*y == 10))
+        return "yes";
+    else
+        return "no";
+}</div><div class="question-card" data-correct="0">
+<div class="question-title">3. The variable z in the second predicate can be re-written in terms of x and y. Which of the following represents the re-written second predicate?</div>
+<div class="options">
+<label><input name="w6_q3" type="radio" value="0"/> ((x &gt; y) ∧ (x*y == 10)).</label>
+<label><input name="w6_q3" type="radio" value="1"/> ((x &lt; y) ∧ (x*y == 10)).</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Since <code>z = true</code> when <code>x &gt; y</code>, substituting z yields <code>((x &gt; y) ∧ (x*y == 10))</code>[cite: 17].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">4. State yes or no: Predicate coverage for the first predicate will also subsume predicate coverage for the second predicate.</div>
+<div class="options">
+<label><input name="w6_q4" type="radio" value="0"/> Yes.</label>
+<label><input name="w6_q4" type="radio" value="1"/> No.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> No. Separate predicates evaluated in different decision branches do not automatically subsume each other's predicate coverage[cite: 17].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">5. How many test cases will be needed for clause coverage for the second predicate if we explicitly count the true and false values for each clause?</div>
+<div class="options">
+<label><input name="w6_q5" type="radio" value="0"/> Two test cases.</label>
+<label><input name="w6_q5" type="radio" value="1"/> Four test cases.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> The second expanded predicate <code>(x &gt; y) ∧ (x*y == 10)</code> contains two independent clauses, requiring 4 test cases to cover all true/false combinations explicitly[cite: 17].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">6. State true or false: The set of test case inputs {(x = 5, y = 2), (x = 4, y = 6), (x = 5, y = 6)} will satisfy clause coverage for the second predicate.</div>
+<div class="options">
+<label><input name="w6_q6" type="radio" value="0"/> True</label>
+<label><input name="w6_q6" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. This input set sufficiently evaluates all individual clauses across their required truth assignments[cite: 17].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">7. State yes or no: The set of test case inputs {(x = 5, y = 2), (x = 4, y = 6), (x = 5, y = 6)} will also satisfy predicate coverage for the first and second predicates.</div>
+<div class="options">
+<label><input name="w6_q7" type="radio" value="0"/> Yes.</label>
+<label><input name="w6_q7" type="radio" value="1"/> No.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Yes. The test suite successfully exercises both true and false outcomes for both predicates[cite: 17].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">8. How many test cases are needed for satisfying RACC for all the clauses for the second predicate?</div>
+<div class="options">
+<label><input name="w6_q8" type="radio" value="0"/> Two test cases.</label>
+<label><input name="w6_q8" type="radio" value="1"/> Three test cases.</label>
+<label><input name="w6_q8" type="radio" value="2"/> Four test cases.</label>
+<label><input name="w6_q8" type="radio" value="3"/> Six test cases.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Restricted Active Clause Coverage (RACC) requires 3 test cases for this specific two-clause conjunction predicate[cite: 17].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">9. State true or false: The set of test case inputs {(x = 4, y = 6), (x = 6, y = 4), (x = 4, y = 5)} satisfy RACC for the second predicate.</div>
+<div class="options">
+<label><input name="w6_q9" type="radio" value="0"/> True</label>
+<label><input name="w6_q9" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. This test input set satisfies the strict correlation and active determination constraints required by RACC[cite: 18].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">10. State true or false: RICC has no feasible pairs of test cases for the second predicate to be true.</div>
+<div class="options">
+<label><input name="w6_q10" type="radio" value="0"/> True</label>
+<label><input name="w6_q10" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Due to conflicting mathematical constraints between <code>x &gt; y</code> and <code>x*y == 10</code>, Restricted Inactive Clause Coverage (RICC) yields no feasible pairs for the predicate to evaluate to true[cite: 18].</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 7 -->
+        <div id="week7" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="3">
+<div class="question-title">1. Test cases for black box testing are designed based on which of the following?</div>
+<div class="options">
+<label><input name="w7_q1" type="radio" value="0"/> Test cases are designed based on the code to be tested.</label>
+<label><input name="w7_q1" type="radio" value="1"/> Test cases are designed based on the design documentation.</label>
+<label><input name="w7_q1" type="radio" value="2"/> Test cases are taken directly from requirements.</label>
+<label><input name="w7_q1" type="radio" value="3"/> Test cases are designed based on inputs and outputs only.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Black box testing derives test cases purely based on specified inputs and expected outputs without looking at internal code structures[cite: 19].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">2. State true or false: All inputs from one partition of inputs in equivalence class partitioning will result in the same output when the program is run on them.</div>
+<div class="options">
+<label><input name="w7_q2" type="radio" value="0"/> True</label>
+<label><input name="w7_q2" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. By definition, equivalence partitioning assumes that all values within a single partition behave equivalently and produce the same output behavior[cite: 19].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">3. Which of the following techniques handle multiple inputs by considering different combinations of equivalence classes?</div>
+<div class="options">
+<label><input name="w7_q3" type="radio" value="0"/> Boundary value analysis.</label>
+<label><input name="w7_q3" type="radio" value="1"/> Functional testing.</label>
+<label><input name="w7_q3" type="radio" value="2"/> Decision tables.</label>
+<label><input name="w7_q3" type="radio" value="3"/> Orthogonal arrays.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Decision tables are specifically structured to handle and evaluate combinations of multiple inputs and conditions[cite: 19].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">4. State true or false: In input space partitioning, both valid and invalid inputs need to be considered.</div>
+<div class="options">
+<label><input name="w7_q4" type="radio" value="0"/> True</label>
+<label><input name="w7_q4" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Both valid (positive) and invalid (negative) partitions are essential for robust input space partitioning[cite: 19].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">5. State yes or no: In input space partitioning, overlapping and missing partitions are allowed as long as they are values at the boundaries.</div>
+<div class="options">
+<label><input name="w7_q5" type="radio" value="0"/> Yes.</label>
+<label><input name="w7_q5" type="radio" value="1"/> No.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> No. Partitions must be disjoint (non-overlapping) and complete (no missing values) across the input domain[cite: 19].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">6. Why is Each Choice Coverage (ECC) considered to be a weak criterion?</div>
+<div class="options">
+<label><input name="w7_q6" type="radio" value="0"/> No combinations of values are considered.</label>
+<label><input name="w7_q6" type="radio" value="1"/> Only one choice is considered throughout.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> ECC only requires each partition to be visited at least once, meaning it fails to test interactions or combinations of values across inputs[cite: 19].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">7. Which of the following represents the total number of tests for all combinations coverage? In the options below, n is the number of partitions and B<sub>i</sub> is the number of blocks in partition i.</div>
+<div class="options">
+<label><input name="w7_q7" type="radio" value="0"/> The total number of tests will be ∏<sub>i=1</sub><sup>n</sup> B<sub>i</sub></label>
+<label><input name="w7_q7" type="radio" value="1"/> The total number of tests will be ∑<sub>i=1</sub><sup>n</sup> B<sub>i</sub></label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> All combinations coverage requires testing the Cartesian product of all blocks across partitions, resulting in the product (∏) of all B<sub>i</sub>[cite: 19, 21].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">8. State true or false: A test case for pair-wise coverage can cover more than one pair of values.</div>
+<div class="options">
+<label><input name="w7_q8" type="radio" value="0"/> True</label>
+<label><input name="w7_q8" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. A single test case evaluating multiple parameters simultaneously can cover several unique pairs of values across different parameter combinations[cite: 19].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">9. When does T-wise coverage criterion become the same as all combinations coverage criterion?</div>
+<div class="options">
+<label><input name="w7_q9" type="radio" value="0"/> When the value for T is the maximum value in a partition.</label>
+<label><input name="w7_q9" type="radio" value="1"/> When the value for T is equal to the number of partitions.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> When T equals the total number of parameters (partitions), testing every T-wise combination is equivalent to testing all possible combinations[cite: 19].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">10. Which of the following represents a correct order of subsumption amongst coverage criteria for input space partitioning? (Read → as "subsumes")</div>
+<div class="options">
+<label><input name="w7_q10" type="radio" value="0"/> Multiple base choice coverage → Pair-wise coverage → Each choice coverage.</label>
+<label><input name="w7_q10" type="radio" value="1"/> T-wise coverage → Multiple base choice coverage → Pair-wise coverage.</label>
+<label><input name="w7_q10" type="radio" value="2"/> Multiple base choice coverage → Base choice coverage → Each choice coverage.</label>
+<label><input name="w7_q10" type="radio" value="3"/> Pair-wise coverage → Base choice coverage → Each choice coverage.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Multiple base choice coverage is stronger and subsumes base choice coverage, which in turn subsumes the weaker each choice coverage criterion[cite: 20].</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 8 -->
+        <div id="week8" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="0">
+<div class="question-title">1. Consider the regular expression (a + b)* · c. Does the word abbabc belong to the language of this regular expression?</div>
+<div class="options">
+<label><input name="w8_q1" type="radio" value="0"/> Yes.</label>
+<label><input name="w8_q1" type="radio" value="1"/> No.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Yes, the word consists of a combination of 'a' and 'b' followed strictly by 'c', which matches the pattern (a + b)* · c[cite: 26].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">2. Consider the regular expression (a + b)* · c once again. Which of the following describes the language corresponding to this regular expression?</div>
+<div class="options">
+<label><input name="w8_q2" type="radio" value="0"/> The language is the set of all words over a and b that have a's followed by b's and can optionally end with a c.</label>
+<label><input name="w8_q2" type="radio" value="1"/> The language is the set of all words over a and b that have a's and b's and can optionally end with a c.</label>
+<label><input name="w8_q2" type="radio" value="2"/> The language is the set of all words over a and b ending with a c.</label>
+<label><input name="w8_q2" type="radio" value="3"/> The language is the set of all words over a and b that optionally end with a c.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> The expression matches any sequence of 'a' and 'b' ending with 'c'[cite: 26].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">3. In the syntax of a programming language, which of the following is used to define how tokens form phrases?</div>
+<div class="options">
+<label><input name="w8_q3" type="radio" value="0"/> Regular expressions.</label>
+<label><input name="w8_q3" type="radio" value="1"/> Context-free grammars.</label>
+<label><input name="w8_q3" type="radio" value="2"/> Context-sensitive grammars.</label>
+<label><input name="w8_q3" type="radio" value="3"/> Normal forms.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Context-free grammars are used to define how tokens form phrases[cite: 22, 24].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">4. Which of the following best defines a mutant?</div>
+<div class="options">
+<label><input name="w8_q4" type="radio" value="0"/> A mutant is the result of one application of a mutation operator to a ground string.</label>
+<label><input name="w8_q4" type="radio" value="1"/> A mutant is the result of at least one application of a mutation operator to a ground string.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A mutant is the result of one application of a mutation operator to a ground string[cite: 22, 24].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">5. State true or false: Are mutants test cases?</div>
+<div class="options">
+<label><input name="w8_q5" type="radio" value="0"/> True</label>
+<label><input name="w8_q5" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> False, mutants are not test cases[cite: 22, 24].</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">6. Which of the following terms defines a mutant that can be killed by any test case?</div>
+<div class="options">
+<label><input name="w8_q6" type="radio" value="0"/> Stillborn mutant.</label>
+<label><input name="w8_q6" type="radio" value="1"/> Dead mutant.</label>
+<label><input name="w8_q6" type="radio" value="2"/> Equivalent mutant.</label>
+<label><input name="w8_q6" type="radio" value="3"/> Trivial mutant.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A trivial mutant is a mutant that can be killed by any test case[cite: 22, 24].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">7. With reference to the notion of killing a mutant, which of the following terms do not need propagation of the error?</div>
+<div class="options">
+<label><input name="w8_q7" type="radio" value="0"/> Weakly killing a mutant.</label>
+<label><input name="w8_q7" type="radio" value="1"/> Strongly killing a mutant.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Weakly killing a mutant does not require error propagation[cite: 22, 24].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">8. When bomb() statement is used to replace a particular statement during mutation, which of the following describes its use?</div>
+<div class="options">
+<label><input name="w8_q8" type="radio" value="0"/> Since it signals a failure as soon as it is executed, it can be used to test if the particular statement can be reached.</label>
+<label><input name="w8_q8" type="radio" value="1"/> Since it signals a potential failure, it can be used to check if the particular statement is erroneous.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Since it signals a failure as soon as it is executed, it can be used to test if the particular statement can be reached[cite: 22, 24].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">9. What is the result of applying the mutation operator failOnZero()?</div>
+<div class="options">
+<label><input name="w8_q9" type="radio" value="0"/> The mutant with this operator is considered to be killed if the value of the resulting expression is zero.</label>
+<label><input name="w8_q9" type="radio" value="1"/> The mutant with this operator forces the value of the resulting expression to be zero.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> The mutant with this operator is considered to be killed if the value of the resulting expression is zero[cite: 22, 24].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">10. Replacing a statement of the form x := a+b; with x := a*b; is an example of which kind of mutation operator?</div>
+<div class="options">
+<label><input name="w8_q10" type="radio" value="0"/> Relational operator replacement.</label>
+<label><input name="w8_q10" type="radio" value="1"/> Assignment operator replacement.</label>
+<label><input name="w8_q10" type="radio" value="2"/> Arithmetic operator replacement.</label>
+<label><input name="w8_q10" type="radio" value="3"/> None of the above.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Arithmetic operator replacement[cite: 23, 25].</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 9 -->
+        <div id="week9" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="1">
+<div class="question-title">1. Changing a method call min(a,b) to a call min(b,a) is an example of which kind of mutation operator for program integration testing?</div>
+<div class="options">
+<label><input name="w9_q1" type="radio" value="0"/> Integration Parameter Variable Replacement.</label>
+<label><input name="w9_q1" type="radio" value="1"/> Integration Parameter Exchange.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Exchanging the order of parameters passed into a method call during integration testing represents an Integration Parameter Exchange[cite: 27].</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">2. Which of the following mutation operators represent moving an overridden method call up or down by one or two statements?</div>
+<div class="options">
+<label><input name="w9_q2" type="radio" value="0"/> Overriding method modification.</label>
+<label><input name="w9_q2" type="radio" value="1"/> Overriding method renaming.</label>
+<label><input name="w9_q2" type="radio" value="2"/> Overriding method rewriting.</label>
+<label><input name="w9_q2" type="radio" value="3"/> Overriding method moving.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Shifting the invocation of an overridden method relative to other instructions is categorized under overriding method moving[cite: 27].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">3. Which of the following integration mutation operator represents changing the order of arguments in method invocations to be the same as that of another overloading method, if one exists?</div>
+<div class="options">
+<label><input name="w9_q3" type="radio" value="0"/> Overloading method change.</label>
+<label><input name="w9_q3" type="radio" value="1"/> Argument number change.</label>
+<label><input name="w9_q3" type="radio" value="2"/> Argument order change.</label>
+<label><input name="w9_q3" type="radio" value="3"/> Reference type change.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Rearranging the sequence of arguments passed to match an overloaded signature is an argument order change[cite: 27].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">4. State true or false: While applying mutation operators for integration testing, both the callee and the caller methods are considered.</div>
+<div class="options">
+<label><input name="w9_q4" type="radio" value="0"/> True</label>
+<label><input name="w9_q4" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Integration testing evaluates the interfaces between components, involving both the caller and the callee methods[cite: 27].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">5. State yes or no: Is there a notion of killing of a mutant while applying mutation testing to inputs?</div>
+<div class="options">
+<label><input name="w9_q5" type="radio" value="0"/> Yes.</label>
+<label><input name="w9_q5" type="radio" value="1"/> No.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> No. Mutation testing targets program code or language artifacts rather than directly applying mutation killing semantics to plain inputs[cite: 27].</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">6. Which of the access levels in Java allows access with the same class and within different class but same package?</div>
+<div class="options">
+<label><input name="w9_q6" type="radio" value="0"/> Public.</label>
+<label><input name="w9_q6" type="radio" value="1"/> Private.</label>
+<label><input name="w9_q6" type="radio" value="2"/> Protected.</label>
+<label><input name="w9_q6" type="radio" value="3"/> Package (default).</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Package-private (default access) permits visibility within the same class and other classes belonging to the same package[cite: 27].</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">7. When the mutation operator of hiding variable deletion is applied, what does it cause in the ground string program?</div>
+<div class="options">
+<label><input name="w9_q7" type="radio" value="0"/> It removes references to the variable.</label>
+<label><input name="w9_q7" type="radio" value="1"/> It hides the variable.</label>
+<label><input name="w9_q7" type="radio" value="2"/> It causes references to the variable to access the variable defined in the parent or ancestor.</label>
+<label><input name="w9_q7" type="radio" value="3"/> It causes references to the variable to access the variable defined in the child class.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Deleting a local hiding variable exposes or redirects variable references to fall back on the parent or ancestor scope[cite: 27].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">8. Which options below have the two kinds of variables associated with a class?</div>
+<div class="options">
+<label><input name="w9_q8" type="radio" value="0"/> Instance and class variables.</label>
+<label><input name="w9_q8" type="radio" value="1"/> Public and private variables.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Class variables (static) and instance variables (non-static fields) are the two primary categories associated with a class[cite: 27].</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">9. State true or false: XML inputs to a program cannot be mutated as XML language is very complicated.</div>
+<div class="options">
+<label><input name="w9_q9" type="radio" value="0"/> True</label>
+<label><input name="w9_q9" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> False. Structured text formats like XML can be systematically mutated using grammar-based or input mutation techniques[cite: 28].</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">10. State true or false: Weak mutation testing subsumes node and edge coverage criteria in graphs based testing.</div>
+<div class="options">
+<label><input name="w9_q10" type="radio" value="0"/> True</label>
+<label><input name="w9_q10" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Weak mutation testing is rigorous enough to structurally subsume basic control-flow graph criteria like node and edge coverage[cite: 28].</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 10 -->
+        <div id="week10" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="1">
+<div class="question-title">1. Which of the following best represents the checking of static websites?</div>
+<div class="options">
+<label><input name="w10_q1" type="radio" value="0"/> Testing involves checking if the underlying HTML files are correct.</label>
+<label><input name="w10_q1" type="radio" value="1"/> Testing involves checking for dead links and checking if all links are valid.</label>
+<label><input name="w10_q1" type="radio" value="2"/> Testing involves checking for the usability of the website.</label>
+<label><input name="w10_q1" type="radio" value="3"/> Testing involves checking if the content given in the website is correct.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Checking static websites primarily involves verifying that all hyperlinks are valid and checking for dead links.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">2. Which of the following is a typical example of a dynamic web page?</div>
+<div class="options">
+<label><input name="w10_q2" type="radio" value="0"/> The website of a university department giving details regarding the courses, faculty, facilities etc.</label>
+<label><input name="w10_q2" type="radio" value="1"/> The website of an application portal for filling application forms for degree programs.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> An interactive application portal processing user submissions and generating personalized data responses is a classic example of a dynamic web page.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">3. Which of the following best describes bypass testing?</div>
+<div class="options">
+<label><input name="w10_q3" type="radio" value="0"/> It is a client side testing technique where test cases are chosen to violate constraints on the inputs that are checked by a client application.</label>
+<label><input name="w10_q3" type="radio" value="1"/> It is a server side testing technique where test cases are chosen to violate constraints on the inputs that can be ignored by the server.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Bypass testing is a client-side technique focused on bypassing or violating client-side validation constraints.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">4. Which of the following lists constraints that cannot typically be checked by just using HTML?</div>
+<div class="options">
+<label><input name="w10_q4" type="radio" value="0"/> Constraints involving POST/GET transfer modes and constraints on the length of input.</label>
+<label><input name="w10_q4" type="radio" value="1"/> Constraints involving inter-dependent values and the format of input data.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Complex inter-dependent constraints and precise data formatting rules usually require server-side logic or scripting validation beyond basic HTML tags.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">5. State true or false: Client-side test cases are designed such that the server can ignore the wrong inputs generated by clients.</div>
+<div class="options">
+<label><input name="w10_q5" type="radio" value="0"/> True</label>
+<label><input name="w10_q5" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> False. Servers must explicitly validate and cannot blindly trust or ignore invalid client-side inputs.</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">6. Which of the following is a list of transitions between components in a component interaction model in server side testing?</div>
+<div class="options">
+<label><input name="w10_q6" type="radio" value="0"/> Transitions that deal with invalid user inputs.</label>
+<label><input name="w10_q6" type="radio" value="1"/> Transitions between atomic sections.</label>
+<label><input name="w10_q6" type="radio" value="2"/> Transitions from one page to another by clicking of hyperlinks.</label>
+<label><input name="w10_q6" type="radio" value="3"/> Simple link transition, form link transition, operational transition.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Server-side testing component interaction models categorize transitions into simple link transitions, form link transitions, and operational transitions.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">7. Which of the following describes a fault in which an overriding method defines the same state variables that the overridden method defines but the computations by the two methods are not the same.</div>
+<div class="options">
+<label><input name="w10_q7" type="radio" value="0"/> State definition inconsistency anomaly.</label>
+<label><input name="w10_q7" type="radio" value="1"/> State defined incorrectly fault.</label>
+<label><input name="w10_q7" type="radio" value="2"/> Method defined incorrectly anomaly.</label>
+<label><input name="w10_q7" type="radio" value="3"/> State visibility anomaly.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> This scenario defines a "State defined incorrectly fault" where state variables are shared/defined between overriding methods but computed differently.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">8. Which of the following defines the nodes of a yo-yo graph?</div>
+<div class="options">
+<label><input name="w10_q8" type="radio" value="0"/> Nodes of a yo-yo graph are the classes of the inheritance hierarchy.</label>
+<label><input name="w10_q8" type="radio" value="1"/> Nodes of a yo-yo graph are the methods of different classes, one node for each of the new, inherited and overridden methods.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Yo-yo graph nodes represent methods across classes in an inheritance hierarchy, including new, inherited, and overridden methods.</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">9. Which of the following best defines the edges of a yo-yo graph?</div>
+<div class="options">
+<label><input name="w10_q9" type="radio" value="0"/> Edges of a yo-yo graph are the method calls among methods of different classes.</label>
+<label><input name="w10_q9" type="radio" value="1"/> Edges of a yo-yo graph are among classes at different levels of inheritance.</label>
+<label><input name="w10_q9" type="radio" value="2"/> Edges of a yo-yo graph are from a caller method to a callee method.</label>
+<label><input name="w10_q9" type="radio" value="3"/> Edges of a yo-yo graph are of two kinds—the actual method calls and the calls that cannot be made due to overriding.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Yo-yo graph edges distinguish between actual method calls and calls suppressed or overridden due to inheritance hierarchy.</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 11 -->
+        <div id="week11" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="1">
+<div class="question-title">1. Which of the following is true about concolic testing?</div>
+<div class="options">
+<label><input name="w11_q1" type="radio" value="0"/> Concolic testing is used instead of symbolic testing when the latter fails.</label>
+<label><input name="w11_q1" type="radio" value="1"/> Concolic testing keeps concrete state and symbolic state.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Concolic testing keeps concrete state and symbolic state.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">2. What is the use of a constraint solver in symbolic testing?</div>
+<div class="options">
+<label><input name="w11_q2" type="radio" value="0"/> Constraint solvers are used to collect path constraints in symbolic testing.</label>
+<label><input name="w11_q2" type="radio" value="1"/> Constraint solvers are used to solve path constraints in symbolic testing.</label>
+<label><input name="w11_q2" type="radio" value="2"/> Constraint solvers are not useful in symbolic testing as not all path constraints can be collected and solved.</label>
+<label><input name="w11_q2" type="radio" value="3"/> Constraint solvers always return true or false values dictating paths in symbolic testing.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Constraint solvers are used to solve path constraints in symbolic testing.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">3. State true or false: Symbolic execution involving loops will always detect non-terminating loops.</div>
+<div class="options">
+<label><input name="w11_q3" type="radio" value="0"/> True</label>
+<label><input name="w11_q3" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> False.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">4. State true or false: Symbolic execution can simultaneously take both the "true" and "false" execution paths for decision statements in a program.</div>
+<div class="options">
+<label><input name="w11_q4" type="radio" value="0"/> True</label>
+<label><input name="w11_q4" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True.</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">5. What are the two techniques used in the algorithm deployed by DART?</div>
+<div class="options">
+<label><input name="w11_q5" type="radio" value="0"/> Random testing and symbolic testing.</label>
+<label><input name="w11_q5" type="radio" value="1"/> Symbolic testing and automated testing.</label>
+<label><input name="w11_q5" type="radio" value="2"/> Directed search and random testing.</label>
+<label><input name="w11_q5" type="radio" value="3"/> Concrete testing and symbolic testing.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Directed search and random testing.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">6. What is a stack used for in the DART algorithm?</div>
+<div class="options">
+<label><input name="w11_q6" type="radio" value="0"/> It is used to remember details of the decision statements that are present during random testing.</label>
+<label><input name="w11_q6" type="radio" value="1"/> It is used to store the states of the program.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> It is used to remember details of the decision statements that are present during random testing.</div>
+</div><div class="code-box"><div class="context-intro">Consider the code fragment given below. Answer the following questions related to symbolic execution of the given code fragment.</div>0: int x, y;
+1: if (x &gt; y) {
+2:   x = x + y;
+3:   y = x - y;
+4:   x = x - y;
+5: }
+6: if (x - y &gt; 0)
+7:   assert(false);
+}</div><div class="question-card" data-correct="0">
+<div class="question-title">7. How many decision points are there in the code fragment?</div>
+<div class="options">
+<label><input name="w11_q7" type="radio" value="0"/> Two decision points.</label>
+<label><input name="w11_q7" type="radio" value="1"/> Three decision points.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Two decision points.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">8. What will be the path constraint at line 1 of the code fragment such that no further execution happens?</div>
+<div class="options">
+<label><input name="w11_q8" type="radio" value="0"/> x &gt; y</label>
+<label><input name="w11_q8" type="radio" value="1"/> x &lt;= y</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> x &lt;= y</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">9. What will be the path constraint to reach statement 6?</div>
+<div class="options">
+<label><input name="w11_q9" type="radio" value="0"/> x &gt; y &amp;&amp; y - x &gt; 0</label>
+<label><input name="w11_q9" type="radio" value="1"/> x &gt; y &amp;&amp; y - x &lt;= 0</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> x &gt; y &amp;&amp; y - x &gt; 0</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">10. State yes or no: Is statement 6 reachable in the program fragment?</div>
+<div class="options">
+<label><input name="w11_q10" type="radio" value="0"/> Yes.</label>
+<label><input name="w11_q10" type="radio" value="1"/> No.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> No.</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        <!-- WEEK 12 -->
+        <div id="week12" class="week-section">
+            
+            <form class="quizForm" onsubmit="return false;">
+                <div class="question-card" data-correct="0">
+<div class="question-title">1. State true or false: Non-functional testing is done at all phases of testing during software development.</div>
+<div class="options">
+<label><input name="w12_q1" type="radio" value="0"/> True</label>
+<label><input name="w12_q1" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Non-functional attributes (such as performance, reliability, and usability) are evaluated across multiple phases of the software development life cycle.</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">2. While sharing files over a common folder, suppose we provide access to read only or edit permissions to the users with which the files are shared, it represents testing for which feature?</div>
+<div class="options">
+<label><input name="w12_q2" type="radio" value="0"/> Reliability testing.</label>
+<label><input name="w12_q2" type="radio" value="1"/> Quality testing.</label>
+<label><input name="w12_q2" type="radio" value="2"/> Security testing.</label>
+<label><input name="w12_q2" type="radio" value="3"/> Compatibility testing.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Managing access rights, read/write permissions, and authorization controls falls directly under security testing.</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">3. While launching a website, suppose we test for the website permitting simultaneous login of 1 to 5000 users, then which testing does it represent?</div>
+<div class="options">
+<label><input name="w12_q3" type="radio" value="0"/> Performance testing.</label>
+<label><input name="w12_q3" type="radio" value="1"/> Scalability testing.</label>
+<label><input name="w12_q3" type="radio" value="2"/> Compatibility testing.</label>
+<label><input name="w12_q3" type="radio" value="3"/> Stress testing.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Testing system limits under extreme concurrent user loads up to 5000 users is characteristic of stress testing.</div>
+</div><div class="question-card" data-correct="1">
+<div class="question-title">4. While testing a home assistant software, reading through the troubleshooting online help represents which kind of testing?</div>
+<div class="options">
+<label><input name="w12_q4" type="radio" value="0"/> Compatibility testing.</label>
+<label><input name="w12_q4" type="radio" value="1"/> Documentation testing.</label>
+<label><input name="w12_q4" type="radio" value="2"/> Error testing.</label>
+<label><input name="w12_q4" type="radio" value="3"/> Regression testing.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Reviewing user manuals, troubleshooting guides, and online help content falls under documentation testing.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">5. State true or false: Load testing is done to find out and understand the upper limit capacity of the system under test and also to determine how the system performs if the current load goes well above the expected limit.</div>
+<div class="options">
+<label><input name="w12_q5" type="radio" value="0"/> True</label>
+<label><input name="w12_q5" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Load and volume testing evaluate behavior and capacity boundaries under expected and high loads.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">6. Which of the following parameters are considered in performance testing?</div>
+<div class="options">
+<label><input name="w12_q6" type="radio" value="0"/> Number of concurrent users, throughput, response time.</label>
+<label><input name="w12_q6" type="radio" value="1"/> Maximum number of allowed users, response time.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Performance testing comprehensively measures concurrent user load, throughput, and response times.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">7. When is a test case for regression testing considered obsolete?</div>
+<div class="options">
+<label><input name="w12_q7" type="radio" value="0"/> A test case is considered obsolete if it is an invalid input to the modified program.</label>
+<label><input name="w12_q7" type="radio" value="1"/> A test case is considered obsolete if the modified program produces the same output as the original program on the test case.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> A regression test case becomes obsolete when program modifications render its inputs invalid or inapplicable.</div>
+</div><div class="question-card" data-correct="0">
+<div class="question-title">8. State true or false: Random testing and retest-all testing techniques are considered useful in regression testing.</div>
+<div class="options">
+<label><input name="w12_q8" type="radio" value="0"/> True</label>
+<label><input name="w12_q8" type="radio" value="1"/> False</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> True. Both retest-all and randomized input strategies are recognized approaches utilized in regression testing suites.</div>
+</div><div class="question-card" data-correct="2">
+<div class="question-title">9. Which of the following object-oriented data flow criterion does not consider inheritance and polymorphism?</div>
+<div class="options">
+<label><input name="w12_q9" type="radio" value="0"/> All-poly-coupling-sequences.</label>
+<label><input name="w12_q9" type="radio" value="1"/> All-coupling-sequences.</label>
+<label><input name="w12_q9" type="radio" value="2"/> All-coupling-defs-and-uses.</label>
+<label><input name="w12_q9" type="radio" value="3"/> All-poly-classes.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> All-coupling-defs-and-uses focuses on standard component/method variable data flow without extending into polymorphic inheritance structures.</div>
+</div><div class="question-card" data-correct="3">
+<div class="question-title">10. In the testing of mobile applications, which of the following represents testing the application in different mobile phones, browsers and for different languages?</div>
+<div class="options">
+<label><input name="w12_q10" type="radio" value="0"/> Performance testing.</label>
+<label><input name="w12_q10" type="radio" value="1"/> Interrupt testing.</label>
+<label><input name="w12_q10" type="radio" value="2"/> Installation testing.</label>
+<label><input name="w12_q10" type="radio" value="3"/> Compatibility testing.</label>
+</div>
+<div class="feedback-text"></div>
+<div class="explanation"><strong>Reason:</strong> Evaluating software behavior across diverse devices, operating systems, browsers, and locales/languages constitutes compatibility testing.</div>
+</div>
+                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+            </form>
+            <div class="result-container"></div>
+        </div>
+        
+        </div>
+    </div>
+
+    <script>
+        const weekTitles = {
+            1: "Software Testing Match Terms Quiz",
+            2: "Graph-Based Structural Coverage Quiz",
+            3: "Software Testing Practice Quiz",
+            4: "Design Integration & Sequencing Quiz",
+            5: "Logic Coverage & Predicates Quiz",
+            6: "Advanced Logic Coverage Quiz",
+            7: "Input Space Partitioning Quiz",
+            8: "Mutation Testing & Regular Expressions Quiz",
+            9: "Integration & Advanced Mutation Testing Quiz",
+            10: "Web Testing & OO Graphs Quiz",
+            11: "Symbolic & Concolic Testing Quiz",
+            12: "Non-Functional Testing Quiz"
+        };
+
+        const weekSubtitles = {
+            1: "Interactive matching practice quiz for fundamental definitions and concepts.",
+            2: "Interactive practice test with control flow graph coverage and explanations.",
+            3: "Interactive practice test with data flow coverage and def-use pairs.",
+            4: "Interactive practice test with call graphs and sequencing constraints.",
+            5: "Interactive practice test with logic coverage and predicate criteria.",
+            6: "Interactive practice test with Correlated Active Clause Coverage criteria.",
+            7: "Interactive practice test with input domain modeling and partitioning criteria.",
+            8: "Interactive practice test with mutation testing and regular expressions.",
+            9: "Interactive practice test with integration and advanced mutation testing.",
+            10: "Interactive practice test with web applications and object-oriented testing.",
+            11: "Interactive practice test with symbolic execution and concolic testing.",
+            12: "Interactive practice test with non-functional testing and OO data flow."
+        };
+
+        function switchWeek(weekNum, btn) {
+            document.querySelectorAll('.week-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(`week${weekNum}`).classList.add('active');
+            if (btn) {
+                btn.classList.add('active');
+            } else {
+                const targetBtn = document.querySelector(`.nav-btn[data-week="${weekNum}"]`);
+                if (targetBtn) targetBtn.classList.add('active');
+            }
+
+            document.getElementById('pageTitle').innerText = weekTitles[weekNum];
+            document.getElementById('pageSubtitle').innerText = weekSubtitles[weekNum];
+            document.querySelector('.main-content').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleZoom(img) {
+            img.classList.toggle('zoomed');
+        }
+
+        function handleImgError(img, name) {
+            img.style.display = 'none';
+            const fallback = img.parentElement.querySelector('.fallback-msg');
+            if (fallback) fallback.style.display = 'block';
+        }
+
+        function submitQuiz(button) {
+            const section = button.closest('.week-section');
+            const cards = section.querySelectorAll('.question-card');
+            let score = 0;
+            let answeredCount = 0;
+
+            cards.forEach((card) => {
+                const correctAnswer = card.getAttribute('data-correct').trim();
+                const selected = card.querySelector('input[type="radio"]:checked');
+                const feedbackDiv = card.querySelector('.feedback-text');
+                const explanationDiv = card.querySelector('.explanation');
+
+                if (explanationDiv) explanationDiv.style.display = 'block';
+
+                if (selected) {
+                    answeredCount++;
+                    if (selected.value.trim() === correctAnswer) {
+                        score++;
+                        feedbackDiv.innerHTML = "<span style='color: #166534;'>✔ Correct!</span>";
+                    } else {
+                        feedbackDiv.innerHTML = "<span style='color: #991b1b;'>✘ Incorrect.</span>";
+                    }
+                } else {
+                    feedbackDiv.innerHTML = "<span style='color: #d97706;'>⚠ Not answered.</span>";
+                }
+            });
+
+            const resultContainer = section.querySelector('.result-container');
+            resultContainer.style.display = 'block';
+            if (answeredCount < cards.length) {
+                resultContainer.className = 'result-container incorrect';
+                resultContainer.innerHTML = `You scored ${score} out of ${cards.length}. (Note: Unanswered questions counted as incorrect)`;
+            } else if (score === cards.length) {
+                resultContainer.className = 'result-container correct';
+                resultContainer.innerHTML = `Congratulations! Perfect score: ${score} / ${cards.length}!`;
+            } else {
+                resultContainer.className = 'result-container incorrect';
+                resultContainer.innerHTML = `You scored ${score} out of ${cards.length}. Review the explanations below!`;
+            }
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetQuiz(button) {
+            const section = button.closest('.week-section');
+            section.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+            section.querySelectorAll('.feedback-text').forEach(fb => fb.innerHTML = '');
+            section.querySelectorAll('.explanation').forEach(exp => exp.style.display = 'none');
+            const resultContainer = section.querySelector('.result-container');
+            if (resultContainer) {
+                resultContainer.style.display = 'none';
+                resultContainer.innerHTML = '';
+            }
+        }
+    </script>
+</body>
+</html>
