@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Software Testing - Master Quiz Dashboard (Weeks 1-12)</title>
+    <title>Software Testing - Master Quiz Dashboard</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -26,7 +26,7 @@
         }
         /* Sidebar Styling */
         .sidebar {
-            width: 270px;
+            width: 290px;
             background-color: #0f172a;
             color: #fff;
             display: flex;
@@ -36,7 +36,7 @@
             flex-shrink: 0;
         }
         .sidebar-header {
-            padding: 20px 16px;
+            padding: 18px 16px 14px;
             font-size: 15px;
             font-weight: bold;
             background-color: #1e293b;
@@ -44,10 +44,40 @@
             border-bottom: 1px solid #334155;
             letter-spacing: 0.5px;
         }
+        /* Category Filter Tabs */
+        .cat-switcher {
+            display: flex;
+            background: #1e293b;
+            padding: 6px;
+            gap: 4px;
+            border-bottom: 1px solid #334155;
+        }
+        .cat-tab {
+            flex: 1;
+            padding: 8px 6px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            color: #94a3b8;
+            font-size: 11.5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            font-family: Arial, sans-serif;
+        }
+        .cat-tab:hover {
+            background: #334155;
+            color: #fff;
+        }
+        .cat-tab.active {
+            background: var(--primary);
+            color: #fff;
+        }
         .nav-links {
             flex: 1;
             overflow-y: auto;
-            padding: 12px 10px;
+            padding: 10px 8px;
         }
         .nav-links::-webkit-scrollbar {
             width: 5px;
@@ -56,20 +86,28 @@
             background: #334155;
             border-radius: 4px;
         }
+        .nav-group-header {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            padding: 12px 10px 6px;
+        }
         .nav-btn {
             display: block;
             width: 100%;
-            padding: 10px 14px;
-            margin-bottom: 5px;
+            padding: 9px 12px;
+            margin-bottom: 4px;
             background: transparent;
             border: none;
             color: #94a3b8;
             text-align: left;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.18s;
             font-family: Arial, sans-serif;
         }
         .nav-btn:hover {
@@ -307,9 +345,27 @@
 
     <!-- Sidebar Navigation -->
     <div class="sidebar">
-        <div class="sidebar-header">Week Details</div>
+        <div class="sidebar-header">📚 Testing Master Dashboard</div>
+        
+        <!-- Category Filter Tabs -->
+        <div class="cat-switcher">
+            <button class="cat-tab active" id="tab-all" onclick="filterCategory('all', this)">All (24)</button>
+            <button class="cat-tab" id="tab-cur" onclick="filterCategory('cur', this)">Current Year (12)</button>
+            <button class="cat-tab" id="tab-py" onclick="filterCategory('py', this)">Previous Year (12)</button>
+        </div>
+
         <div class="nav-links" id="navLinks">
-            <button class="nav-btn active" data-week="1" onclick="switchWeek(1, this)">Week 1: Software Testing Match Terms</button><button class="nav-btn" data-week="2" onclick="switchWeek(2, this)">Week 2: Graph Structural</button><button class="nav-btn" data-week="3" onclick="switchWeek(3, this)">Week 3: Data Flow</button><button class="nav-btn" data-week="4" onclick="switchWeek(4, this)">Week 4: Design Integration</button><button class="nav-btn" data-week="5" onclick="switchWeek(5, this)">Week 5: Logic Coverage</button><button class="nav-btn" data-week="6" onclick="switchWeek(6, this)">Week 6: Advanced Logic</button><button class="nav-btn" data-week="7" onclick="switchWeek(7, this)">Week 7: Input Space Partitioning</button><button class="nav-btn" data-week="8" onclick="switchWeek(8, this)">Week 8: Mutation & RegEx</button><button class="nav-btn" data-week="9" onclick="switchWeek(9, this)">Week 9: Integration Mutation</button><button class="nav-btn" data-week="10" onclick="switchWeek(10, this)">Week 10: Web & OO Graphs</button><button class="nav-btn" data-week="11" onclick="switchWeek(11, this)">Week 11: Symbolic & Concolic</button><button class="nav-btn" data-week="12" onclick="switchWeek(12, this)">Week 12: Non-Functional & OO</button>
+            <!-- Current Year Group -->
+            <div class="nav-group-header" id="header-cur">📘 Current Year (Weeks 1–12)</div>
+            <div id="group-cur">
+                <button class="nav-btn cur-btn active" data-section="cur_week1" onclick="switchWeek('cur_week1', this)">Week 1: Match Terms</button><button class="nav-btn cur-btn" data-section="cur_week2" onclick="switchWeek('cur_week2', this)">Week 2: Graph Structural</button><button class="nav-btn cur-btn" data-section="cur_week3" onclick="switchWeek('cur_week3', this)">Week 3: Data Flow</button><button class="nav-btn cur-btn" data-section="cur_week4" onclick="switchWeek('cur_week4', this)">Week 4: Design Integration</button><button class="nav-btn cur-btn" data-section="cur_week5" onclick="switchWeek('cur_week5', this)">Week 5: Logic Coverage</button><button class="nav-btn cur-btn" data-section="cur_week6" onclick="switchWeek('cur_week6', this)">Week 6: Advanced Logic</button><button class="nav-btn cur-btn" data-section="cur_week7" onclick="switchWeek('cur_week7', this)">Week 7: Input Space Partitioning</button><button class="nav-btn cur-btn" data-section="cur_week8" onclick="switchWeek('cur_week8', this)">Week 8: Mutation & RegEx</button><button class="nav-btn cur-btn" data-section="cur_week9" onclick="switchWeek('cur_week9', this)">Week 9: Integration Mutation</button><button class="nav-btn cur-btn" data-section="cur_week10" onclick="switchWeek('cur_week10', this)">Week 10: Web & OO Graphs</button><button class="nav-btn cur-btn" data-section="cur_week11" onclick="switchWeek('cur_week11', this)">Week 11: Symbolic & Concolic</button><button class="nav-btn cur-btn" data-section="cur_week12" onclick="switchWeek('cur_week12', this)">Week 12: Non-Functional & OO</button>
+            </div>
+
+            <!-- Previous Year Group -->
+            <div class="nav-group-header" id="header-py" style="margin-top: 10px;">🏛️ Previous Year (Weeks 1–12)</div>
+            <div id="group-py">
+                <button class="nav-btn py-btn" data-section="py_week1" onclick="switchWeek('py_week1', this)">PY Week 1: Testing Fundamentals</button><button class="nav-btn py-btn" data-section="py_week2" onclick="switchWeek('py_week2', this)">PY Week 2: Graph Structural</button><button class="nav-btn py-btn" data-section="py_week3" onclick="switchWeek('py_week3', this)">PY Week 3: Data Flow & Def-Use</button><button class="nav-btn py-btn" data-section="py_week4" onclick="switchWeek('py_week4', this)">PY Week 4: Call Graphs & Sequencing</button><button class="nav-btn py-btn" data-section="py_week5" onclick="switchWeek('py_week5', this)">PY Week 5: Logic Coverage & Truth</button><button class="nav-btn py-btn" data-section="py_week6" onclick="switchWeek('py_week6', this)">PY Week 6: Advanced Logic Criteria</button><button class="nav-btn py-btn" data-section="py_week7" onclick="switchWeek('py_week7', this)">PY Week 7: Input Space Partitioning</button><button class="nav-btn py-btn" data-section="py_week8" onclick="switchWeek('py_week8', this)">PY Week 8: Mutation & Grammars</button><button class="nav-btn py-btn" data-section="py_week9" onclick="switchWeek('py_week9', this)">PY Week 9: Integration Mutation</button><button class="nav-btn py-btn" data-section="py_week10" onclick="switchWeek('py_week10', this)">PY Week 10: Web & State Testing</button><button class="nav-btn py-btn" data-section="py_week11" onclick="switchWeek('py_week11', this)">PY Week 11: Symbolic Execution</button><button class="nav-btn py-btn" data-section="py_week12" onclick="switchWeek('py_week12', this)">PY Week 12: Non-Functional Testing</button>
+            </div>
         </div>
     </div>
 
@@ -317,12 +373,11 @@
     <div class="main-content">
         <div class="container">
             <h1 id="pageTitle">Software Testing Match Terms Quiz</h1>
-            <div class="subtitle" id="pageSubtitle">Interactive matching practice quiz for fundamental definitions and concepts.</div>
+            <div class="subtitle" id="pageSubtitle">Current Year Assignment • Interactive matching practice quiz for fundamental definitions.</div>
 
-            
-        <!-- WEEK 1 -->
-        <div id="week1" class="week-section active">
-            <table class="match-table">
+            <!-- Current Year Sections -->
+            <div class="week-section active" id="cur_week1">
+<table class="match-table">
 <thead>
 <tr>
 <th style="width: 45%;">Terms (Left Column)</th>
@@ -372,8 +427,8 @@
 </tr>
 </tbody>
 </table>
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="h">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="h">
 <div class="question-title">1. Regression testing matches with:</div>
 <div class="options">
 <label><input name="w1_q1" type="radio" value="a"/> with (a)</label>
@@ -474,17 +529,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> The fundamental objective and primary use of software testing is to find errors in software[cite: 6]. Match: <strong>(e)</strong>.</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 2 -->
-        <div id="week2" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="1">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week2">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="1">
 <div class="question-title">1. Which of the following best represents an edge e = (u, v) being reachable in a graph?</div>
 <div class="options">
 <label><input name="w2_q1" type="radio" value="0"/> Edge e = (u, v) is reachable if there is a path from one of the initial vertices to the vertex u.</label>
@@ -576,17 +627,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> Yes, because it travels across all individual edges present in the graph[cite: 9].</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 3 -->
-        <div id="week3" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="1">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week3">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="1">
 <div class="question-title">1. Consider a variable <code>num</code> of type <code>float</code>. Suppose a particular method has a statement <code>if(log(num) &gt;= 0.72)</code>, will it be considered a definition of <code>num</code> or a use of <code>num</code>?</div>
 <div class="options">
 <label><input name="w3_q1" type="radio" value="0"/> The statement is a definition of <code>num</code>.</label>
@@ -675,17 +722,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> True. The standard prime path generation algorithm systematically finds all simple paths of length $k$, extends them to length $k+1$ where possible, and stops when no further simple paths can be lengthened or added.</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 4 -->
-        <div id="week4" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="2">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week4">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="2">
 <div class="question-title">1. Which of the following is a graph model used for design integration testing?</div>
 <div class="options">
 <label><input name="w4_q1" type="radio" value="0"/> Control flow graph.</label>
@@ -785,17 +828,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> Yes. Repeated valid transitions (such as multiple writes between open and close) fully satisfy all constraints[cite: 12].</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 5 -->
-        <div id="week5" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="1">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week5">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="1">
 <div class="question-title">1. For a predicate with n clauses, how many test requirements suffice to achieve active clause coverage?</div>
 <div class="options">
 <label><input name="w5_q1" type="radio" value="0"/> n test requirements.</label>
@@ -884,17 +923,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> Based on the standard truth table mapping for GACC evaluation of clause a, the corresponding pair set is {5, 6, 7} × {13, 14, 15}[cite: 14].</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 6 -->
-        <div id="week6" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="0">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week6">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="0">
 <div class="question-title">1. Which of the following techniques are used to avoid using ACC criteria in logic based testing?</div>
 <div class="options">
 <label><input name="w6_q1" type="radio" value="0"/> Predicate transformation to eliminate multiple clauses.</label>
@@ -991,17 +1026,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> True. Due to conflicting mathematical constraints between <code>x &gt; y</code> and <code>x*y == 10</code>, Restricted Inactive Clause Coverage (RICC) yields no feasible pairs for the predicate to evaluate to true[cite: 18].</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 7 -->
-        <div id="week7" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="3">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week7">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="3">
 <div class="question-title">1. Test cases for black box testing are designed based on which of the following?</div>
 <div class="options">
 <label><input name="w7_q1" type="radio" value="0"/> Test cases are designed based on the code to be tested.</label>
@@ -1088,17 +1119,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> Multiple base choice coverage is stronger and subsumes base choice coverage, which in turn subsumes the weaker each choice coverage criterion[cite: 20].</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 8 -->
-        <div id="week8" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="0">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week8">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="0">
 <div class="question-title">1. Consider the regular expression (a + b)* · c. Does the word abbabc belong to the language of this regular expression?</div>
 <div class="options">
 <label><input name="w8_q1" type="radio" value="0"/> Yes.</label>
@@ -1187,17 +1214,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> Arithmetic operator replacement[cite: 23, 25].</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 9 -->
-        <div id="week9" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="1">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week9">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="1">
 <div class="question-title">1. Changing a method call min(a,b) to a call min(b,a) is an example of which kind of mutation operator for program integration testing?</div>
 <div class="options">
 <label><input name="w9_q1" type="radio" value="0"/> Integration Parameter Variable Replacement.</label>
@@ -1286,17 +1309,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> True. Weak mutation testing is rigorous enough to structurally subsume basic control-flow graph criteria like node and edge coverage[cite: 28].</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 10 -->
-        <div id="week10" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="1">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week10">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="1">
 <div class="question-title">1. Which of the following best represents the checking of static websites?</div>
 <div class="options">
 <label><input name="w10_q1" type="radio" value="0"/> Testing involves checking if the underlying HTML files are correct.</label>
@@ -1377,17 +1396,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> Yo-yo graph edges distinguish between actual method calls and calls suppressed or overridden due to inheritance hierarchy.</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 11 -->
-        <div id="week11" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="1">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week11">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="1">
 <div class="question-title">1. Which of the following is true about concolic testing?</div>
 <div class="options">
 <label><input name="w11_q1" type="radio" value="0"/> Concolic testing is used instead of symbolic testing when the latter fails.</label>
@@ -1480,17 +1495,13 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> No.</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
-        </div>
-        
-        <!-- WEEK 12 -->
-        <div id="week12" class="week-section">
-            
-            <form class="quizForm" onsubmit="return false;">
-                <div class="question-card" data-correct="0">
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div><div class="week-section" id="cur_week12">
+<form class="quizForm" onsubmit="return false;">
+<div class="question-card" data-correct="0">
 <div class="question-title">1. State true or false: Non-functional testing is done at all phases of testing during software development.</div>
 <div class="options">
 <label><input name="w12_q1" type="radio" value="0"/> True</label>
@@ -1581,61 +1592,3124 @@
 <div class="feedback-text"></div>
 <div class="explanation"><strong>Reason:</strong> Evaluating software behavior across diverse devices, operating systems, browsers, and locales/languages constitutes compatibility testing.</div>
 </div>
-                <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
-                <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
-            </form>
-            <div class="result-container"></div>
+<button class="btn-submit" onclick="submitQuiz(this)" type="button">Submit Quiz</button>
+<button class="btn-reset" onclick="resetQuiz(this)" type="button">Reset Quiz</button>
+</form>
+<div class="result-container"></div>
+</div>
+
+            <!-- Previous Year Sections -->
+            
+    <!-- PREVIOUS YEAR WEEK 1 -->
+    <div id="py_week1" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="2">
+            <div class="question-title">1. Choose the right option to fill in the blank: Response method $\Delta_1$ is robust than method $\Delta_2$, which in turn is more robust than method $\Delta_3$. The level of testing the built-in life interfaces starts from $\Delta_1$ to $\Delta_2$ and then to $\Delta_3$ is called _____.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q1" value="0">
+                <span>Functional testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q1" value="1">
+                <span>Unit testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q1" value="2">
+                <span>Integration testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q1" value="3">
+                <span>System testing</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Integration testing focuses on combining units/modules and checking their built-in life interfaces progressively ($Delta_1 	o Delta_2 	o Delta_3$). Unit testing is at the individual module level, while Functional and System testing are high-level black-box testing techniques.</div>
         </div>
         
+        <div class="question-card" data-correct="1">
+            <div class="question-title">2. State True or False: A coverage criterion $C_1$ used for evaluation and test coverage criterion $C_2$ if there is at least one test suite that satisfies $C_2$ which also satisfies $C_1$.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q2" value="0">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q2" value="1">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> False. According to standard testing criteria subsumption definitions, a coverage criterion $C_1$ subsumes $C_2$ if and only if **every** test suite that satisfies $C_1$ **also** satisfies $C_2$, not just 'at least one test suite'.</div>
+        </div>
+        
+        <div class="question-card" data-correct="1">
+            <div class="question-title">3. State True or False: Testing is developed to install the errors in code.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q3" value="0">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q3" value="1">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> False. Testing is performed to *detect and uncover* errors, faults, and failures in code, not to 'install' or introduce errors into the software.</div>
+        </div>
+        
+        <div class="question-card" data-correct="2">
+            <div class="question-title">4. Which of the following can best describe "debugging-based testing"?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q4" value="0">
+                <span>Testing is a standard discipline, everyone in an organization strives to test thoroughly.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q4" value="1">
+                <span>Testing is done mainly by developers, for debugging their code.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q4" value="2">
+                <span>Testing is done to identify failures and reduce risks.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q4" value="3">
+                <span>Testing is done to show absence of errors.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Testing is fundamentally performed to identify failures, locate defects, and reduce risks associated with software deployment. Saying 'testing shows absence of errors' is a well-known misconception (Dijkstra).</div>
+        </div>
+        
+        <div class="question-card" data-correct="2">
+            <div class="question-title">5. Which of the following best defines usability testing?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q5" value="0">
+                <span>Testing done to compare the files and source code value.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q5" value="1">
+                <span>Testing done to bring production software to matching all the users.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q5" value="2">
+                <span>Testing done to understand how easy it is to use a software.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q5" value="3">
+                <span>Testing done to ensure that the user interface of the software is as specified in the requirements.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Usability testing evaluates user-friendliness, intuitiveness, and how easy and comfortable it is for end-users to interact with the software application.</div>
+        </div>
+        
+        <div class="question-card" data-correct="2">
+            <div class="question-title">6. Which of the following is a pair of white-box testing techniques?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q6" value="0">
+                <span>Unit testing, performance testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q6" value="1">
+                <span>Integration testing, stress testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q6" value="2">
+                <span>Unit testing, integration testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q6" value="3">
+                <span>Usability testing, performance testing</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Unit testing and integration testing are both structural / white-box or code-centric levels of testing. Performance, stress, and usability testing are non-functional black-box testing techniques.</div>
+        </div>
+        
+        <div class="question-card" data-correct="3">
+            <div class="question-title">7. Read the certainly, which of the following statements accurately defines a test case?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q7" value="0">
+                <span>A test case contains only inputs for the software artifact.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q7" value="1">
+                <span>A test case contains inputs to the software artifact along with demographic supports.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q7" value="2">
+                <span>A test case contains inputs to the software artifact and a boolean output (pass or fail).</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q7" value="3">
+                <span>A test case contains inputs to the software artifact which is executed and the actual output is also recorded as a part of the test case.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> A formal test case consists of test inputs, execution conditions, and the expected/actual outputs recorded during execution to determine pass/fail criteria.</div>
+        </div>
+        
+        <div class="question-card" data-correct="2">
+            <div class="question-title">8. Which of the subsequent statements satisfies the covering relation $C_1 \sqsubseteq C_2$ for a coverage criterion $C$?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q8" value="0">
+                <span>For every test requirement $t in TR_1$, there exists a test case $t in TS$ such that $t$ satisfies $t$ subform $tr$.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q8" value="1">
+                <span>For every test requirement $t in TR_1$, there exists a test case $t in TS$ such that $t in C_2$ resolution of relation $equiv$.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q8" value="2">
+                <span>For every test requirement $t_1 in TR_1$, there exists at least one $t_2 in TR_2$ such that $t_2$ satisfies $t_1$.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q8" value="3">
+                <span>For every test requirement $t_1 in TR_1$, there exist at least one $t_2 in TR_2$ such that $t_2$ subsumes $t_1$ relation $equiv$.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Criterion covering relation means that for every test requirement in $TR_1$, there is a corresponding test requirement in $TR_2$ that satisfies or subsumes it.</div>
+        </div>
+        
+        <div class="question-card" data-correct="0">
+            <div class="question-title">9. What does it mean that a coverage criterion $C_1$ subsumes a coverage criterion $C_2$?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q9" value="0">
+                <span>$C_1$ subsumes $C_2$ if every test suite that satisfies $C_1$ also satisfies $C_2$.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q9" value="1">
+                <span>$C_1$ subsumes $C_2$ if every test suite that satisfies $C_2$ also satisfies $C_1$.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> $C_1$ subsumes $C_2$ means $C_1$ is stronger or stricter than $C_2$; therefore, any test suite rigorous enough to satisfy $C_1$ will automatically satisfy the weaker criterion $C_2$.</div>
+        </div>
+        
+        <div class="question-card" data-correct="0">
+            <div class="question-title">10. State True or False: JUnit framework can be used for unit interaction testing?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w1_q10" value="0">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w1_q10" value="1">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> True. JUnit is primarily a unit testing framework in Java, and through integration with test suites, mock objects, and database interactions, it can verify unit interactions.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 2 -->
+    <div id="py_week2" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="1">
+            <div class="question-title">1. Which of the following best defines an unfeasible test path?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q1" value="0">
+                <span>An unfeasible test path is the test path that does not exist in the graph.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q1" value="1">
+                <span>An unfeasible test path is one that can never be executed by any test case.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q1" value="2">
+                <span>An unfeasible test path is one that can be executed by any test case.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q1" value="3">
+                <span>An unfeasible test path is one that does not start at an initial vertex or end at a final vertex.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> An unfeasible test path is a sequence of graph nodes/edges that forms a path structurally in the control flow graph, but due to program semantics and predicates, it can never be executed by any test case.</div>
+        </div>
+        
+        <div class="question-card" data-correct="1">
+            <div class="question-title">2. How are test requirements defined and met in graph-based checklist coverage criteria?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q2" value="0">
+                <span>Test requirements are basically the same as test paths, they are given as test paths.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q2" value="1">
+                <span>Test requirements are defined as properties of graph paths and they are met by using test paths that satisfy each test requirement.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> In graph-based criteria, test requirements define specific structural elements (nodes, edges, paths) we want to cover, and test paths are executed to satisfy those requirements.</div>
+        </div>
+        
+        <div class="question-card" data-correct="0">
+            <div class="question-title">3. In control flow graphs, terms of the terms define requirement basic block?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q3" value="0">
+                <span>A basic block is a sequence of statements such that there is no branching in the sequence.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q3" value="1">
+                <span>A basic block is any sequence of statements that occurs as a path in the control flow graph.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> A basic block is defined as a straight-line code sequence with no branches in (except to the entry) and no branches out (except at the exit).</div>
+        </div>
+        
+        <div class="question-card" data-correct="1">
+            <div class="question-title">4. Consider a control flow graph $G$ corresponding to a method and a strongly connected component $G' \subset G$. Which of the following does $G'$ correspond to?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q4" value="0">
+                <span>$G'$ represents recursive method in case the method does not have loops.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q4" value="1">
+                <span>$G'$ represents a loop in the method.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> A strongly connected component in a control flow graph means every node is reachable from every other node in that subgraph, which inherently represents loops (cycles) in the method.</div>
+        </div>
+        
+        <div class="question-card" data-correct="0">
+            <div class="question-title">5. Which of the following will return the shortest path between two nodes in a control flow graph?</div>
+            
+            <div style="text-align:center; margin: 15px 0;">
+                <img src="py_week2.png" alt="Diagram for Q5" class="local-img" onclick="toggleZoom(this)" onerror="handleImgError(this, 'py_week2.png')">
+                <div class="zoom-hint">💡 Click on image to expand / zoom in</div>
+                <div class="fallback-msg" style="display:none; color: #b91c1c; font-size: 13px; margin: 10px 0;">
+                    ⚠️ Could not load <code>py_week2.png</code>. Make sure it is in the same directory as this HTML file.
+                </div>
+            </div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q5" value="0">
+                <span>Breadth-first search.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q5" value="1">
+                <span>Depth-first search.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Breadth-first search (BFS) explores graph nodes level by level, ensuring that the first time a target node is reached, it represents the shortest path (minimum number of edges) from the source.</div>
+        </div>
+        
+        <div class="question-card" data-correct="0">
+            <div class="question-title">6. State or False: There are test paths that achieve node coverage but not edge coverage.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q6" value="0">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q6" value="1">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> True. A graph could have isolated nodes or configurations where touching every node does not require traversing every connecting edge.</div>
+        </div>
+        
+        <div class="question-card" data-correct="0">
+            <div class="question-title">7. Which of the following test paths achieve edge coverage?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q7" value="0">
+                <span>Test path [0, 1, 3, 2, 4]</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q7" value="1">
+                <span>Test paths [1, 2, 4] and [1, 3, 2]</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q7" value="2">
+                <span>Both the paths above achieve edge coverage.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q7" value="3">
+                <span>None of the above test paths achieve edge coverage.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Path [0, 1, 3, 2, 4] traverses all required control flow edges in the standard graph representation.</div>
+        </div>
+        
+        <div class="question-card" data-correct="1">
+            <div class="question-title">8. State yes or no: In the graph above, the test path [1, 2, 4] covers the edge [2, 3].</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q8" value="0">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q8" value="1">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> No. The path [1, 2, 4] directly moves from node 1 to 2 and 2 to 4, completely bypassing node 3 and therefore failing to cover edge [2, 3].</div>
+        </div>
+        
+        <div class="question-card" data-correct="3">
+            <div class="question-title">9. The test path [0, 1, 3, 2, 3, 2, 4] achieves which of the following coverage criteria?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q9" value="0">
+                <span>Node coverage only</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q9" value="1">
+                <span>Edge coverage only</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q9" value="2">
+                <span>Graph and edge coverage only</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q9" value="3">
+                <span>Edge-pair coverage</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Entering loops multiple times and traversing combinations of consecutive edges ([1,3,2], [3,2,3], [2,3,2]) satisfies edge-pair coverage (pairs of adjacent edges).</div>
+        </div>
+        
+        <div class="question-card" data-correct="1">
+            <div class="question-title">10. State true or false: The test path [1, 2, 4] achieves edge coverage.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w2_q10" value="0">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w2_q10" value="1">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> False. The test path [1, 2, 4] only covers a subset of edges and leaves out other branches in the graph, failing complete edge coverage.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 3 -->
+    <div id="py_week3" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="B">
+            <div class="question-title">1. Which of the following represents a basic block in a control flow graph?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q1" value="A">
+                <span>A basic block of statements is a set of all statements that are part of a function that the control flow graph represents.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q1" value="B">
+                <span>A basic block of statements is a sequence of statements such that if that statement the execution starts, then all the statements in the sequence will also be executed.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. A basic block is a sequence of statements such that if execution starts at the first statement, all statements in the sequence will be executed without branching.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">2. Consider a variable of type `list`. Suppose there is a method that has a statement of the type `concept v = v₁;`. Which of the following statements are correct regarding the definition of `v`?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q2" value="A">
+                <span>The statement is a definition of `v`.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q2" value="B">
+                <span>The statement is a use of `v`.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q2" value="C">
+                <span>The statement is both a definition and a use of `v`.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q2" value="D">
+                <span>The statement is neither a definition nor a use of `v`.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. The statement `v = v₁;` defines variable `v` (assigns to it) while simultaneously using variable `v₁` (reading its value).</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">3. Consider a variable `v` of type `double` and suppose a particular method in test has a statement of `math.sqrt(v);`. Is it a considered a definition of `v` or a use of `v`?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q3" value="A">
+                <span>The statement is a definition of `v`.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q3" value="B">
+                <span>The statement is a use of `v`.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. In `math.sqrt(v)`, variable `v` is being read (used) as an input to the square root function, not defined (modified).</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">4. State true or False: For every variable `v`, every program, the every definition of `v` is always a use of `v`.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q4" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q4" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. A definition assigns a value to a variable, which does not necessarily mean its value is used or read right at that point.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">5. Which of the following best defines a du-path for a variable `v`?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q5" value="A">
+                <span>A du-path is a simple path from a definition of `v` to a use of `v` with any further definitions of `v` in between.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q5" value="B">
+                <span>A du-path is a path from a definition of `v` to a use of `v` without any further definitions of `v` in between.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q5" value="C">
+                <span>A du-path is a simple path from a definition of `v` to a use of `v` or an adorning further use of `v` in between.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q5" value="D">
+                <span>A du-path is a path from a definition of `v` to a use of `v` without any further use of `v` in between.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. A du-path is a simple path from a definition of a variable to a use of that variable without any intervening definitions of the same variable.</div>
+        </div>
+        
+        <div class="question-card" data-correct="No">
+            <div class="question-title">6. State yes or no: Can principle paths ever have fewer du-paths for their definitions?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q6" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q6" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: No. Principle paths and du-paths follow structural graph constraints independently.</div>
+        </div>
+        
+        <div class="question-card" data-correct="No">
+            <div class="question-title">7. Is it true that all du-path-based flow coverage of test cases is prime path coverage?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q7" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q7" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: No. Du-path coverage criteria and prime path coverage criteria address different criteria (data flow vs control flow).</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">8. Which of the following statements are true when it comes to comparing traditional control flow criteria with graph-based coverage criteria?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q8" value="A">
+                <span>Node and statement coverage are the same; edge and branch coverage are the same.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q8" value="B">
+                <span>Edge and decision coverage are the same.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. In traditional control flow graphs, node coverage corresponds to statement coverage, and edge coverage corresponds to branch coverage.</div>
+        </div>
+        
+        <div class="question-card" data-correct="D">
+            <div class="question-title">9. Which of the following defines a linearly independent path of execution in a control flow graph?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q9" value="A">
+                <span>A path of which there are no branches.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q9" value="B">
+                <span>A path which has at least one other path within it.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q9" value="C">
+                <span>A path that introduces at least one new edge or set of new edges not included in other paths.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q9" value="D">
+                <span>A path which has no inclusion of other paths within it.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: D. A linearly independent path introduces at least one new edge that has not been included in any other paths before, or simply put, a path which has no inclusion of other paths within it.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">10. State true or false: Node and edge coverage, as covering parameters for structural coverage from graphs, are given with the input graph itself.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w3_q10" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w3_q10" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Node and edge structural coverage requirements are directly derived from the components of the input graph.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 4 -->
+    <div id="py_week4" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="B">
+            <div class="question-title">1. Which of the following best defines what a stub does?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q1" value="A">
+                <span>It is a special purpose implementation of a software module, used to develop or test a component that calls it.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q1" value="B">
+                <span>It is a software component that replaces another component that takes care of the control and/or the calling of a software component.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. A stub is a software component that replaces another component to simulate behavior, take care of control, or manage calling mechanisms.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">2. A method in a class is overloaded with method B, where B takes a value and B returns a 5, there is a set of examples of which kind of coupling parameter determination?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q2" value="A">
+                <span>Parameter coupling</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q2" value="B">
+                <span>Interface coupling</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q2" value="C">
+                <span>External coupling</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q2" value="D">
+                <span>Global variable coupling</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Overloaded method parameter passing and return value handling exemplifies parameter coupling.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">3. In test sequencing structural test that act as reachability specification, which of the following are used?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q3" value="A">
+                <span>Tests are failure to sequencing constraints than satisfy the constraints.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q3" value="B">
+                <span>Tests can objects to sequencing constraints than satisfying constraints.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q3" value="C">
+                <span>Tests are sequences of method calls, as they occur in the specification.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q3" value="D">
+                <span>Tests are sequence generated sequencing constraints.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. In test sequencing with reachability specifications, tests are structured as sequences of method calls matching their occurrence in the specification.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">4. A simple path that has no definition for the first use of a coupling criteria is referred to as ____________.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q4" value="A">
+                <span>Adef-clearpath</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q4" value="B">
+                <span>A reaching definition path</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. A simple path with no intervening definition for a variable's coupling criteria is known as a def-clear path.</div>
+        </div>
+        
+        <div class="question-card" data-correct="No">
+            <div class="question-title">5. Does the du-loss prime flow graph representing node use exercise false data flow-free test path representing the same node?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q5" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q5" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: No. A du-loss prime flow graph does not automatically exercise false data flow-free test paths.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">6. Which of the following is true with reference to the graph constraints and path sequencing constraints?</div>
+            
+            <div style="text-align:center; margin: 15px 0;">
+                <img src="py_week4.png" alt="Diagram for Q6" class="local-img" onclick="toggleZoom(this)" onerror="handleImgError(this, 'py_week4.png')">
+                <div class="zoom-hint">💡 Click on image to expand / zoom in</div>
+                <div class="fallback-msg" style="display:none; color: #b91c1c; font-size: 13px; margin: 10px 0;">
+                    ⚠️ Could not load <code>py_week4.png</code>. Make sure it is in the same directory as this HTML file.
+                </div>
+            </div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q6" value="A">
+                <span>All the sequencing constraints are satisfied.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q6" value="B">
+                <span>Constraints (1), (2) and (4) are satisfied but (3) is failing test.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q6" value="C">
+                <span>Constraints (1), (2) and (3) are satisfied but (4) is failing test.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q6" value="D">
+                <span>All constraints are violated.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Constraints (1), (2), and (4) are satisfied by the graph topology and binding rules, while constraint (3) fails.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">7. State true or false: The path [1, 2, 3, 7] satisfies all constraints.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q7" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q7" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Path [1, 2, 3, 7] violates specific sequencing/binding constraints in this context.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">8. State true or false: The path [1, 2, 3, 7] satisfies all the constraints. (Note: Check specific alternate path formulation)</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q8" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q8" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Under alternative path checking and subset constraints, this path satisfies the stated requirements.</div>
+        </div>
+        
+        <div class="question-card" data-correct="No">
+            <div class="question-title">9. Does path [1, 5, 4] violate any of the constraints?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q9" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q9" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: No. Path [1, 5, 4] follows valid transition edges and does not violate the specified constraints.</div>
+        </div>
+        
+        <div class="question-card" data-correct="Yes">
+            <div class="question-title">10. State true or false: The path [1, 6, 8, 8] satisfy all the constraints?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w4_q10" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w4_q10" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: Yes. Path [1, 6, 8, 8] successfully satisfies all terminal and routing constraints.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 5 -->
+    <div id="py_week5" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="True">
+            <div class="question-title">1. State true or false: Logic testing can be applied to structural testing.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q1" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q1" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Logic testing is widely applied in structural testing to evaluate branch conditions and decision predicates.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">2. Which of the following describes the semantics of specification coverage when tested for logic structures like predicates?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q2" value="A">
+                <span>Surface condition logic</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q2" value="B">
+                <span>Active clause coverage criteria</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Active clause coverage criteria describe how predicate clauses are isolated and tested.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">3. Which of the following represents a strategy such as active clause coverage, where each clause is evaluated in turn?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q3" value="A">
+                <span>Condition-decision coverage -> Multiple condition coverage -> Path coverage</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q3" value="B">
+                <span>Predicate clause evaluator -> Branch clause evaluation -> Clause logic mapping</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q3" value="C">
+                <span>Combinatorial clause coverage -> Predicate clause coverage -> Condition coverage</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q3" value="D">
+                <span>Combinatorial decision coverage -> Combinatorial clause coverage -> Predicate coverage</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Condition-decision coverage progresses toward multiple condition coverage and path coverage hierarchies.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">4. Which of the following represents active clause coverage for predicatepwith respect to clausea?</div>
+            
+            <div style="text-align:center; margin: 15px 0;">
+                <img src="py_week5.png" alt="Diagram for Q4" class="local-img" onclick="toggleZoom(this)" onerror="handleImgError(this, 'py_week5.png')">
+                <div class="zoom-hint">💡 Click on image to expand / zoom in</div>
+                <div class="fallback-msg" style="display:none; color: #b91c1c; font-size: 13px; margin: 10px 0;">
+                    ⚠️ Could not load <code>py_week5.png</code>. Make sure it is in the same directory as this HTML file.
+                </div>
+            </div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q4" value="A">
+                <span>(1, 2)</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q4" value="B">
+                <span>(3, 4)</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Test pair (1, 2) represents active clause coverage for clause <i>a</i> from the truth table values.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">5. Which of the following is associated with active clause coverage for clauseb?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q5" value="A">
+                <span>(1, 3)</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q5" value="B">
+                <span>(2, 5)</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q5" value="C">
+                <span>(3, 5)</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q5" value="D">
+                <span>(4, 7)</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Test pair (1, 3) corresponds to active clause coverage for clause <i>b</i>.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">6. Which of the following represents the constraint format for active clause coverage for clausec?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q6" value="A">
+                <span>(1, 2)</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q6" value="B">
+                <span>(1, 5)</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Test pair (1, 5) represents active clause coverage constraint format for clause <i>c</i>.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">7. Which of the following test test-case sets satisfies active clause coverage for clausecfrom the table?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q7" value="A">
+                <span>{1, 2}, {3, 4}</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q7" value="B">
+                <span>{1, 5}, {3, 7}, {2, 6}</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Test set {{1, 5}, {3, 7}, {2, 6}} satisfies active clause coverage for clause <i>c</i>.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">8. State true or false: Predicatepsatisfies clause coverage criteria.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q8" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q8" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. The predicate <i>p</i> successfully satisfies standard clause coverage criteria.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">9. State true or false: ACC and MCC both achieve the exact same test coverage metrics.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q9" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q9" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. ACC (Active Clause Coverage) and MCC (Multiple Condition Coverage) have different test size requirements and coverage semantics.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">10. State true or false: Path ACC is always subsumed by general edge coverage.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q10" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q10" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Data/logic criteria do not automatically get subsumed by general edge coverage in all graph contexts.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">11. State true or false: Combinatorial clause coverage requires testing every possible truth value assignment for all clauses.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q11" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q11" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Combinatorial clause coverage mandates testing all possible combinations of truth values for every clause.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">12. State true or false: Correlated active clause coverage (CACC) requires the major clause to independently affect the predicate's value while minor clauses are held fixed.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q12" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q12" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. CACC requires that the minor clauses force the major clause to determine the final truth value of the predicate.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">13. State true or false: Restricted active clause coverage (RACC) is a subset of general active clause coverage.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w5_q13" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w5_q13" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Restricted Active Clause Coverage (RACC) adds further constraints making it a specialized subset of general ACC.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 6 -->
+    <div id="py_week6" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="B">
+            <div class="question-title">1. While applying logic-based testing to finite state source code, is it true that the predicates can be taken exactly as they occur in code?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q1" value="A">
+                <span>Yes, the predicates can be considered exactly as they occur in code.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q1" value="B">
+                <span>No, in fact we have to add extra clauses to the predicates.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. In software logic testing, extra clauses and parameters often need to be mapped to properly evaluate state and predicate boundaries.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">2. How do logical predicates occur in finite state machines?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q2" value="A">
+                <span>The logical predicates occur as part of the states of the finite state machines.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q2" value="B">
+                <span>The logical predicates occur as guards on the transitions of the finite state machines.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. In finite state machines, logical predicates appear as guards on state transitions.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">3. In a requirements specification, where do logical predicates occur?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q3" value="A">
+                <span>They occur strictly as a part of the requirements.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q3" value="B">
+                <span>They occur as preconditions, invariants, and post-conditions in the requirements.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q3" value="C">
+                <span>All the positions in requirements can be translated into predicates.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q3" value="D">
+                <span>Logical predicates cannot be found in requirements.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Within requirements specifications, logical predicates naturally describe preconditions, invariants, and post-conditions.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">4. State true or false: The internal variable a in the current predicate needs to be written in terms of the input parameters x and y.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q4" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q4" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Internal variables like `a` must be represented in terms of input parameters to analyze path logic correctly.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">5. Is it true that predicate coverage for the first predicate entails predicate coverage for the second predicate?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q5" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q5" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Predicate coverage of one predicate does not automatically entail predicate coverage of an independent second predicate.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">6. How many test cases are needed for clause coverage for the first sub-predicate if we strictly count the truth table values for each clause?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q6" value="A">
+                <span>Two test cases</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q6" value="B">
+                <span>Four test cases</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Two test cases are sufficient for basic clause coverage of a simple sub-predicate.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">7. State true or false: The set of test inputs {(x = 5, y = 3), (x = 4, y = 8), (x = 6, y = 2)} satisfy clause coverage for the second predicate.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q7" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q7" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. The specified test input set satisfies clause coverage requirements for the second predicate.</div>
+        </div>
+        
+        <div class="question-card" data-correct="Yes">
+            <div class="question-title">8. State yes or no: The set of test book inputs {(x = 5, y = 2), (x = 4, y = 8), (x = 5, y = 3)} will also satisfy predicate coverage for the first and second predicates.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q8" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q8" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: Yes. This test book input set successfully satisfies predicate coverage for both predicates.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">9. How many test cases are essential for satisfying terms for all the clauses for the second predicate?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q9" value="A">
+                <span>Only one test case</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q9" value="B">
+                <span>Two test cases</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q9" value="C">
+                <span>Three test cases</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q9" value="D">
+                <span>Four test cases</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. Three test cases are required to satisfy terms for all clauses for the second predicate under active testing constraints.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">10. State true or false: The set of test color inputs {(x = 4, y = 5), (x = 8, y = 4), (x = 2, y = 4)} satisfy RACC for the second predicate.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w6_q10" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w6_q10" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. The given test color input set fails to meet strict Restricted Active Clause Coverage (RACC) requirements for the second predicate.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 7 -->
+    <div id="py_week7" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="B">
+            <div class="question-title">1. How many partitions exist for the input 'CGPA' if we consider only valid inputs?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q1" value="A">
+                <span>Three partitions</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q1" value="B">
+                <span>Five partitions</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Five distinct valid partitions exist for the CGPA input based on the specified cutoff ranges and criteria.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">2. Do the test inputs CGPA = 7.9, CGPA = 7.8, CGPA = 9.1 belong to the same partition?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q2" value="A">
+                <span>Yes, they belong to the same partition.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q2" value="B">
+                <span>Yes, they belong to different partitions.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. CGPA values around these brackets fall into valid partition groupings under range analysis.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">3. What is the expected output for the test input containing CGPA = 9 as input?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q3" value="A">
+                <span>Eligibility to offers above INR 20,00,000 per annum and if any offline word, eligible for all others.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q3" value="B">
+                <span>Only eligible for offers above INR 20,00,000 per annum.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. A CGPA of 9 qualifies for offers above INR 20,00,000 per annum and includes standard offline/other placement privileges.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">4. State true or false: A student has a CGPA of 5 and will be eligible to appear for placements for companies with a salary offer at INR 40,00,000.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q4" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q4" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Students with a CGPA below 6 are not recorded or eligible for high-tier placement offerings.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">5. Which of the following are valid partitioning of inputs?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q5" value="A">
+                <span>Salary range: [ INR _x_ to INR 20,00,000] & [ INR 20,00,000 to INR _y_] where _x_ is the minimum salary offered and _y_ is the maximum salary offered.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q5" value="B">
+                <span>Salary range: [ INR 1 to INR 20,00,000] & [ INR 20,00,000 to INR _M_].</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q5" value="C">
+                <span>Both the options above are valid partitions.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q5" value="D">
+                <span>None of the options above are valid partitions.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. Both specified options represent logically valid partitioning schemes for salary input ranges.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">6. Amongst the various coverage criteria for input space partitioning, which is the least expensive and which is the most expensive?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q6" value="A">
+                <span>All combinations coverage is the least expensive and multiple base choice coverage is the most expensive.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q6" value="B">
+                <span>All combinations coverage is the most expensive and multiple base choice coverage is the least expensive.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q6" value="C">
+                <span>Each choice coverage is the least expensive and all combinations coverage is the most expensive.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q6" value="D">
+                <span>Each choice coverage is the most expensive and all combinations coverage is the least expensive.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. Each choice coverage is the least expensive (fewest test cases), whereas all combinations coverage is the most expensive.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">7. State true or false: Multiple base choice coverage subsumes pair-wise coverage.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q7" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q7" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Multiple base choice coverage does not strictly subsume pair-wise coverage in all partition models.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">8. Which criterion below will have a maximum number of test cases?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q8" value="A">
+                <span>Each choice coverage</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q8" value="B">
+                <span>All combinations coverage</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q8" value="C">
+                <span>Base choice coverage scheme</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q8" value="D">
+                <span>Multiple base choices coverage scheme</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. All combinations coverage generates the maximum number of test cases among input partitioning criteria.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">9. What does ‘T’ value strategy criteria describe the criterion w.r.t combinatorial coverage criterion?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q9" value="A">
+                <span>When the value for ‘T’ is the maximum number in a partition.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q9" value="B">
+                <span>When the value for ‘T’ is equal to the number of partitions.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. The 'T' value strategy corresponds to the number of partitions evaluated in combinatorial configurations.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">10. State true or false: When summarizing the input domain, partitioning is done with respect to test requirements.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w7_q10" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w7_q10" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Summarizing and partitioning the input domain is fundamentally guided by test requirements and specifications.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 8 -->
+    <div id="py_week8" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="D">
+            <div class="question-title">1. Consider the regular expression $(a+b)*(a+b)+$ over the alphabet $\Sigma = \{a, b\}$. Which of the following options represents a set of words pertinent to the regular expression?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q1" value="A">
+                <span>ab, a, abab</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q1" value="B">
+                <span>ababaa, babaab</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q1" value="C">
+                <span>aabb, bbfa</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q1" value="D">
+                <span>All of the above</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: D. All of the listed option sets represent valid word formations pertinent to the specified regular expression patterns.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">2. For the same regular expression in $(a+b)*(a+b)+$, which of the following refers to the language corresponding to the regular expression?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q2" value="A">
+                <span>The language is the set of all elements over $a$ and $b$ that have at least one $a$ and at least one $b$ in letters.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q2" value="B">
+                <span>The language is the set of all elements over $a$ and $b$ that have at least one $a$ or at least one $b$ in letters.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. The language corresponds to strings of $a$ and $b$ that have at least one $a$ or at least one $b$ in letters.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">3. While parsing a program to extract syntactic information, which of the following parses characters from tokens?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q3" value="A">
+                <span>Regular expressions</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q3" value="B">
+                <span>Context-free grammars</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q3" value="C">
+                <span>Sentence/mutation grammars</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q3" value="D">
+                <span>The axiom form of the grammar</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Regular expressions are commonly utilized for lexical analysis to parse characters into tokens.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">4. Consider the context-free grammar given by $G = (\Sigma, P, S)$, where $\Sigma = \{S, a\}, P = \{S \to aSS, S \to aa\}$. Which of the following is the language generated by the grammar?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q4" value="A">
+                <span>The language generated by $G$ is $\{a^n \mid n = odd\}$.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q4" value="B">
+                <span>The language generated by $G$ is $\{a^n \mid n \ge 2$ and $n$ is even $\}$.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. The grammar generates strings of $a$'s where the total count $n ge 2$ and $n$ is even.</div>
+        </div>
+        
+        <div class="question-card" data-correct="Yes">
+            <div class="question-title">5. State yes or no: Is the ground entry in mutation testing the same as the program under test?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q5" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q5" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: Yes. The baseline reference or ground entry program in mutation testing is indeed the original program under test.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">6. Which of the following is a mutant that can be killed by any test case?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q6" value="A">
+                <span>Dead mutant</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q6" value="B">
+                <span>Equivalent mutant</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q6" value="C">
+                <span>Trivial mutant</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q6" value="D">
+                <span>Subsuming mutant</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: Trivial mutant. A trivial mutant is one that can be easily killed by almost any test case.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">7. Suppose a decision statement like `if (x > y) & (x == z)` is evaluated for the clauses, if `x = 5, y = 3, z = 5` is an example of what kind of mutation operator?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q7" value="A">
+                <span>Replacing a logical operator</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q7" value="B">
+                <span>Replacing a relational operator</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q7" value="C">
+                <span>Replacing a domain statement</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q7" value="D">
+                <span>Replacing a condition statement</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Altering relational components (like comparison operators) represents a relational operator mutation.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">8. As per the lecture, replacing a particular assignment statement with a statement like `x = 0;` or `x = x+1;` is an example of the mutation operator applied to which of the items in testing?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q8" value="A">
+                <span>Program level</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q8" value="B">
+                <span>Algebraic level</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q8" value="C">
+                <span>Statement level</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q8" value="D">
+                <span>Debugging level</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Program-level statement replacement mutants modify general program assignment structures.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">9. Is a programmer decides to use two or three mutation operations together to increase the chances of testing faulty when together, is this considered to have a useful strategy in mutation testing?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q9" value="A">
+                <span>Yes, it will find many more errors.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q9" value="B">
+                <span>No, mutation operations work best when applied one at a time.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Mutation operators are typically designed to be applied one at a time (coupling effect theory) rather than compounding multiple random operators simultaneously.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">10. State true or false: Mutation testing is not focused to show that a particular operator is replaced or not used.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w8_q10" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w8_q10" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Mutation testing measures test suite adequacy based on mutant survival rather than demonstrating operator usage status directly.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 9 -->
+    <div id="py_week9" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="A">
+            <div class="question-title">1. How is overloading different from overriding in object-oriented programming?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q1" value="A">
+                <span>Overloading occurs when methods have the same name in the same class and overriding occurs between methods in a class and base of its descendants.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q1" value="B">
+                <span>Overloading occurs between methods in a class and base of its descendants and overriding occurs between methods in the same class.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Overloading occurs when multiple methods share the same name within the same class (with different signatures), whereas overriding happens when a subclass provides a specific implementation of a method defined in its parent/base class.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">2. Which of the following is true for use of `super` keyword in Java?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q2" value="A">
+                <span>`super` keyword can explicitly use parent's variables and methods using the dot operator.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q2" value="B">
+                <span>`super` keyword can use child's variables and methods, and cannot use parent's ones using the dot operator.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. The `super` keyword in Java allows a subclass to explicitly reference and invoke parent class variables and methods using the dot operator.</div>
+        </div>
+        
+        <div class="question-card" data-correct="D">
+            <div class="question-title">3. While applying the mutation operator that replaces a method's unique return value by the required by the called method back to the caller method?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q3" value="A">
+                <span>The method lead to obtained, as the call should also be obtained in the latest method.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q3" value="B">
+                <span>The value required by the planned method is replaced with a conclusive statement in the caller.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q3" value="C">
+                <span>A message is sent to a caller indicating that there is no value to be returned by the method is obtained.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q3" value="D">
+                <span>The value required by the planned method is replaced with a fixed constant value.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: D. When replacing return values in certain method mutation operators, the return value is often replaced with a fixed constant value.</div>
+        </div>
+        
+        <div class="question-card" data-correct="D">
+            <div class="question-title">4. When mutation testing is applied on a class file to test class faults, which of the following statements is true?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q4" value="A">
+                <span>Both the inputs and the program block is compiling the required term to be mutated with an emulation operator.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q4" value="B">
+                <span>Only the inputs are mutated; the program reference or coupling remains the same.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q4" value="C">
+                <span>The inputs are not mutated, the program is mutated in a random parameters.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q4" value="D">
+                <span>The inputs are not mutated; the program is mutated in one of the statements that process the inputs.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: D. In class mutation testing, inputs are typically not mutated; instead, the program statements that process inputs and logic are mutated.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">5. When we change a method call `m1(double x)` to `m1(double y)` is an example of which of the mutation operators association?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q5" value="A">
+                <span>Integration parameter variable equipment.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q5" value="B">
+                <span>Integration parameter variable exchange.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Changing method parameters like `m1(double x)` to `m1(double y)` falls under integration parameter variable exchange.</div>
+        </div>
+        
+        <div class="question-card" data-correct="Yes">
+            <div class="question-title">6. State yes or no: The programming language Java does not support multiple class inheritance and hence each class only has a single parent.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q6" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q6" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: Yes. Java does not support multiple class inheritance for classes to avoid ambiguity issues (the diamond problem).</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">7. Which of the following is part of mutation operator represents changing the order of arguments so that parameters are to be the same as that of another overriding method in the class?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q7" value="A">
+                <span>Overloading call ref change</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q7" value="B">
+                <span>Argument number change</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q7" value="C">
+                <span>Argument order change</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q7" value="D">
+                <span>Reference type change</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. Changing the sequence of arguments so that parameters match another overriding method signature is known as an argument order change.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">8. State true or false: Method loading spoils program identity for object-oriented source code to achieve system debugging purpose.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q8" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q8" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Method overloading is a standard OOP feature and does not 'spoil' program identity for debugging.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">9. Typically assuming that mutation testing subsumes edge coverage, which of the following mutation operators are used?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q9" value="A">
+                <span>Relational expression replacement</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q9" value="B">
+                <span>Statement block replacement</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q9" value="C">
+                <span>Logical variable replacement</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q9" value="D">
+                <span>Method statement replacement</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Relational expression replacements are frequently utilized when analyzing edge coverage and mutant subsumption.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">10. Opinions of one mutation analysis are true with reference to mutation testing subsuming all data coverage?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w9_q10" value="A">
+                <span>We need to consider string mutation to be applied to the classes with certain variable definitions.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w9_q10" value="B">
+                <span>Each weak data testing mutation on the statement to that contain variable definitions will work.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. To assess data coverage and mutation interaction, string mutations applied to classes containing variable definitions are considered.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 10 -->
+    <div id="py_week10" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="A">
+            <div class="question-title">1. Which of the following features of router web-services are tested using graphs?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q1" value="A">
+                <span>We check if all the transactions are valid and if there are any deadlocks.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q1" value="B">
+                <span>We check if all the information given is correct in each of the linked web-pages.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Graph models for web services check transaction validity and ensure there are no deadlocks.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">2. While testing web applications, for which of the following is true regarding client-side vs. server-side testing?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q2" value="A">
+                <span>Client and server are separated and testers typically don't have access to the server code.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q2" value="B">
+                <span>Tester have equal access to the client code and server code even though they are separated.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. In client-server web app testing, client and server are separated, and testers typically do not have direct access to the server code.</div>
+        </div>
+        
+        <div class="question-card" data-correct="No">
+            <div class="question-title">3. State yes or no: Is it accessible to generate all the html screens that are based on web applications?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q3" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q3" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: No. It is generally not feasible or accessible to statically pre-generate all possible dynamic HTML screens for complex web applications.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">4. Which of the following is a tool of testing we client can be used to average user inputs to a wide application?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q4" value="A">
+                <span>Generate values automatically using appropriate algorithm.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q4" value="B">
+                <span>Manual user to supply inputs.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q4" value="C">
+                <span>Random choices, user session data used for flows on the clashes of application.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q4" value="D">
+                <span>Generate inputs randomly and then choose based on the application.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. Random choices, user session data, and usage paths are often leveraged for modeling user inputs across application flows.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">5. Which of the following features can be checked using UML sequence diagrams to process user varying scenarios?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q5" value="A">
+                <span>Change of transfer mode, checking for length of input and checking against other criteria defined above.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q5" value="B">
+                <span>Change of transfer mode and change of data type of input.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q5" value="C">
+                <span>Checking of inter-dependencies of input values.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q5" value="D">
+                <span>Checking the length of input and data type descriptor.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. UML sequence diagrams help verify transfer mode changes, input length constraints, and validation criteria.</div>
+        </div>
+        
+        <div class="question-card" data-correct="No">
+            <div class="question-title">6. Is a contract graph model useful for testing component level properties of web applications?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q6" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q6" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: No. Contract graphs are typically used for service-level or architectural contracts rather than general component-level properties.</div>
+        </div>
+        
+        <div class="question-card" data-correct="D">
+            <div class="question-title">7. Which of the following is a complete list of operators that are used in component expressions?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q7" value="A">
+                <span>Sequencing and selection.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q7" value="B">
+                <span>Iteration and selection.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q7" value="C">
+                <span>Sequencing, iteration and selection.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q7" value="D">
+                <span>Sequencing, iteration, selection and aggregation.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: D. The complete list of operators used in component expressions includes sequencing, iteration, selection, and aggregation.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">8. Which of the following defines the nodes of a oo sys graph?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q8" value="A">
+                <span>Nodes of a oo sys graph are the classes of the information hierarchy.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q8" value="B">
+                <span>Nodes of a oo sys graph are the methods of different classes, one node for each of the new, inherited and overridden methods.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Nodes of an object-oriented system graph represent methods of different classes, with separate nodes for new, inherited, and overridden methods.</div>
+        </div>
+        
+        <div class="question-card" data-correct="D">
+            <div class="question-title">9. Which of the following best defines the edges of the oo sys graph?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q9" value="A">
+                <span>Edges of the oo sys graph are the method calls joining methods of different classes.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q9" value="B">
+                <span>Edges of the oo sys graph are joining classes and different layers of information.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q9" value="C">
+                <span>Edges of the oo sys graph and link a nodes' method to another method.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q9" value="D">
+                <span>Edges of the oo sys graph are method-level invocation calls, other calls that constitute static flow & dynamic.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: D. Edges of an object-oriented system graph represent method-level invocation calls and other calls constituting static and dynamic flow.</div>
+        </div>
+        
+        <div class="question-card" data-correct="True">
+            <div class="question-title">10. State true or false: Are the faults in object oriented programs can be determined but statically?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w10_q10" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w10_q10" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: True. Many structural and behavioral faults in object-oriented programs can be analyzed and determined statically using program graph representations.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 11 -->
+    <div id="py_week11" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="Yes">
+            <div class="question-title">1. State yes or no: Is symbolic testing a failure-revealing testing art?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q1" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q1" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: Yes. Symbolic testing is a powerful technique capable of systematically uncovering failures and path constraint violations.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">2. Which of the following is true about concrete testing?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q2" value="A">
+                <span>Concrete testing is restricted to symbolic testing when character fails.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q2" value="B">
+                <span>Concrete testing uses concrete states and symbolic states.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Concrete testing utilizes concrete values while blending or contrasting with symbolic state execution.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">3. What is the use of a SMT solver in symbolic testing?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q3" value="A">
+                <span>SMT solvers are used to collect path constraints in symbolic testing.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q3" value="B">
+                <span>SMT solvers are used to solve path constraints and get values that can be used as test inputs.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q3" value="C">
+                <span>Constraint solvers are not useful in symbolic testing as normalization cannot addressed and solved.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q3" value="D">
+                <span>Constraint solvers on predicates always return true or false values which helps to decide the execution paths.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. SMT solvers are used in symbolic execution to solve path constraints and generate concrete test input values.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">4. State true or false: Illustrate structural execution part of objects whose representation is programs?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q4" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q4" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Structural execution representation involves control flow rather than arbitrary object structures alone.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">5. Which of the following is a set of techniques used in the algorithm described by SMT?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q5" value="A">
+                <span>Random testing, methods testing and constraint solvers.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q5" value="B">
+                <span>Symbolic testing and automated testing.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q5" value="C">
+                <span>Directed search, random testing and constraint solvers.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q5" value="D">
+                <span>Concolic testing and symbolic testing.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. Automated symbolic execution and SMT solvers often combine directed search, random testing, and constraint solvers.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">6. Which of the following strategy is used for treat search in symbolic testing?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q6" value="A">
+                <span>Random search.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q6" value="B">
+                <span>Systematic random search interleaved with path sensitive search.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Systematic random search interleaved with path sensitive search is standard for covering complex execution trees.</div>
+        </div>
+        
+        <div class="question-card" data-correct="D">
+            <div class="question-title">7. What does the code fragment do?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q7" value="A">
+                <span>It computes the greatest of a and b.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q7" value="B">
+                <span>It checks for a greatest divisor.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q7" value="C">
+                <span>It computes the values of a and b.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q7" value="D">
+                <span>It computes the values of a and b's gcd.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: D. The provided code fragment implements subtraction-based Euclidean algorithm steps which computes the Greatest Common Divisor (GCD) of `a` and `b`.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">8. How many decision points and execution paths are shown in the code fragment?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q8" value="A">
+                <span>Two decision points and three execution paths.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q8" value="B">
+                <span>Three decision points and four execution paths.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. There are two primary decision points (the `if (a > b)` branch and the `if (a == b)` check) yielding three valid execution paths.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">9. What will be the path constraint at line 7 of the code fragment such that program returns without further execution?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q9" value="A">
+                <span>a == b</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q9" value="B">
+                <span>a != b</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. For line 7 (`if (a == b)`) to return `a` immediately without further execution, the path constraint must evaluate to `a == b`.</div>
+        </div>
+        
+        <div class="question-card" data-correct="Yes">
+            <div class="question-title">10. State true or false: Are error statements reachable in the given program fragment?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q10" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q10" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: Yes. Depending on test conditions and values, statements in the execution paths are reachable.</div>
+        </div>
+        
+        <div class="question-card" data-correct="Yes">
+            <div class="question-title">11. State yes or no: Is the error statement reachable in the given program fragment? (Alternative check)</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w11_q11" value="Yes">
+                <span>Yes</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w11_q11" value="No">
+                <span>No</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: Yes. Affirmative check confirming reachability under valid branch conditions.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
+    <!-- PREVIOUS YEAR WEEK 12 -->
+    <div id="py_week12" class="week-section">
+        <form class="quizForm" onsubmit="return false;">
+            
+        <div class="question-card" data-correct="False">
+            <div class="question-title">1. State true or false: Regression testing is a standard testing technique up to date for class changes in the code.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q1" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q1" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Regression testing adapts to object-oriented and modern class changes rather than standard static techniques alone.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">2. Let $P'$ be a recompiled version of $P$. Let $\sigma$ be a modified version of $\sigma'$. When we say that a test set $T$ is adequate for $P'$ w.r.t $\sigma$?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q2" value="A">
+                <span>That test $T$ is adequate for $P'$ increases perspective than test used for $P$.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q2" value="B">
+                <span>That test $T$ is adequate for $P'$, it does tests behavior and an output of execution.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Adequacy w.r.t modified code means the test set successfully tests the updated behavior and execution output.</div>
+        </div>
+        
+        <div class="question-card" data-correct="False">
+            <div class="question-title">3. State true or false: Testing for non-functional or quality requirements can be done at all iterations of software development.</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q3" value="True">
+                <span>True</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q3" value="False">
+                <span>False</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: False. Non-functional requirements and quality testing are typically prioritized and evaluated at specific milestones rather than all iterations.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">4. If a software application version $X$ released in the year 2010 can run on version $Y$ of the same application released in the year 2015, what does it infer regarding its compatibility?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q4" value="A">
+                <span>The application $X$ is forward compatible.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q4" value="B">
+                <span>The application $X$ is backward compatible.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. If an older version (2010) runs on a newer runtime environment (2015), it demonstrates forward compatibility.</div>
+        </div>
+        
+        <div class="question-card" data-correct="C">
+            <div class="question-title">5. If a system loaded in a smart model web client and to test "Flexibility" in terms of small file sizes, then it is an example of which kind of quality requirement?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q5" value="A">
+                <span>It is an example of non-functional dependency requirements.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q5" value="B">
+                <span>It is an example of scalability requirement.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q5" value="C">
+                <span>It is an example of security/authorization requirement.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q5" value="D">
+                <span>It is an example for elasticity requirement.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: C. Security, authorization, and permission parameters often govern data access models in web and mobile clients.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">6. Installation instructions are often considered as a part of a software package. What do these instructions consist of?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q6" value="A">
+                <span>They are a part of line software documentation.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q6" value="B">
+                <span>They are a part of line software operations procedure.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q6" value="C">
+                <span>They are a part of line regulatory requirements for the software.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q6" value="D">
+                <span>They are a part of the availability requirements of the software.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Installation instructions are standard components of software documentation.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">7. Which of the following testing represents the testing that aims to find the upper load capacity of the inputs that a particular system can handle?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q7" value="A">
+                <span>Performance testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q7" value="B">
+                <span>Load testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q7" value="C">
+                <span>Stress testing</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q7" value="D">
+                <span>Stress testing (alt)</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Load testing specifically targets determining the upper load capacity of inputs a system can handle.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">8. Which of the following is a list of key challenges in testing of mobile applications?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q8" value="A">
+                <span>Device fragmentation, different mobile networks, compatibility across platforms.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q8" value="B">
+                <span>Key challenge is memory in mobile applications being different from that of desktop applications.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q8" value="C">
+                <span>Mobile applications have to be tested within a limited time only, there is no other challenge.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q8" value="D">
+                <span>Testing across platforms is the only key challenge.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A. Key challenges in mobile testing include device fragmentation, varying mobile networks, and cross-platform compatibility.</div>
+        </div>
+        
+        <div class="question-card" data-correct="B">
+            <div class="question-title">9. When performance testing is considered for mobile applications, which of the following aspects are essential?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q9" value="A">
+                <span>Device data operating systems and browsers.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q9" value="B">
+                <span>Network coverage, memory and battery.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q9" value="C">
+                <span>Speed with platform user experience.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q9" value="D">
+                <span>Cloud and silicon factors of the number of users.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: B. Mobile performance testing critically depends on assessing network coverage, memory consumption, and battery usage.</div>
+        </div>
+        
+        <div class="question-card" data-correct="A">
+            <div class="question-title">10. Logical access testing is a list of techniques that mobile applications can handle test?</div>
+            
+            <div class="options">
+                
+            <label>
+                <input type="radio" name="py_w12_q10" value="A">
+                <span>Security, database access and localization.</span>
+            </label>
+            
+            <label>
+                <input type="radio" name="py_w12_q10" value="B">
+                <span>Performance benchmarks and scalability limits.</span>
+            </label>
+            
+            </div>
+            <div class="feedback-text"></div>
+            <div class="explanation"><strong>Explanation:</strong> Correct Answer: A[cite: 10, 12]. Logical access testing involves security verification, database access controls, and localization checks.</div>
+        </div>
+        
+            <button type="button" class="btn-submit" onclick="submitQuiz(this)">Submit Quiz</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz(this)">Reset Quiz</button>
+        </form>
+        <div class="result-container"></div>
+    </div>
+    
         </div>
     </div>
 
     <script>
-        const weekTitles = {
-            1: "Software Testing Match Terms Quiz",
-            2: "Graph-Based Structural Coverage Quiz",
-            3: "Software Testing Practice Quiz",
-            4: "Design Integration & Sequencing Quiz",
-            5: "Logic Coverage & Predicates Quiz",
-            6: "Advanced Logic Coverage Quiz",
-            7: "Input Space Partitioning Quiz",
-            8: "Mutation Testing & Regular Expressions Quiz",
-            9: "Integration & Advanced Mutation Testing Quiz",
-            10: "Web Testing & OO Graphs Quiz",
-            11: "Symbolic & Concolic Testing Quiz",
-            12: "Non-Functional Testing Quiz"
-        };
+        const titlesMap = {"cur_week1": "Software Testing Match Terms Quiz", "cur_week2": "Graph-Based Structural Coverage Quiz", "cur_week3": "Software Testing Practice Quiz", "cur_week4": "Design Integration & Sequencing Quiz", "cur_week5": "Logic Coverage & Predicates Quiz", "cur_week6": "Advanced Logic Coverage Quiz", "cur_week7": "Input Space Partitioning Quiz", "cur_week8": "Mutation Testing & Regular Expressions Quiz", "cur_week9": "Integration & Advanced Mutation Testing Quiz", "cur_week10": "Web Testing & OO Graphs Quiz", "cur_week11": "Symbolic & Concolic Testing Quiz", "cur_week12": "Non-Functional Testing Quiz", "py_week1": "Previous Year — Week 1 Assignment", "py_week2": "Previous Year — Week 2 Assignment", "py_week3": "Previous Year — Week 3 Assignment", "py_week4": "Previous Year — Week 4 Assignment", "py_week5": "Previous Year — Week 5 Assignment", "py_week6": "Previous Year — Week 6 Assignment", "py_week7": "Previous Year — Week 7 Assignment", "py_week8": "Previous Year — Week 8 Assignment", "py_week9": "Previous Year — Week 9 Assignment", "py_week10": "Previous Year — Week 10 Assignment", "py_week11": "Previous Year — Week 11 Assignment", "py_week12": "Previous Year — Week 12 Assignment"};
+        const subsMap = {"cur_week1": "Current Year Assignment • Interactive matching practice quiz for fundamental definitions.", "cur_week2": "Current Year Assignment • Interactive practice test with control flow graph coverage.", "cur_week3": "Current Year Assignment • Interactive practice test with data flow coverage and def-use pairs.", "cur_week4": "Current Year Assignment • Interactive practice test with call graphs and sequencing constraints.", "cur_week5": "Current Year Assignment • Interactive practice test with logic coverage and predicate criteria.", "cur_week6": "Current Year Assignment • Interactive practice test with Correlated Active Clause Coverage criteria.", "cur_week7": "Current Year Assignment • Interactive practice test with input domain modeling and partitioning.", "cur_week8": "Current Year Assignment • Interactive practice test with mutation testing and regular expressions.", "cur_week9": "Current Year Assignment • Interactive practice test with integration and advanced mutation.", "cur_week10": "Current Year Assignment • Interactive practice test with web applications and object-oriented testing.", "cur_week11": "Current Year Assignment • Interactive practice test with symbolic execution and concolic testing.", "cur_week12": "Current Year Assignment • Interactive practice test with non-functional testing and OO data flow.", "py_week1": "Previous Year Assignment Archive • Fundamental definitions and testing levels.", "py_week2": "Previous Year Assignment Archive • Control flow graphs and structural coverage.", "py_week3": "Previous Year Assignment Archive • Basic blocks, definitions, uses, and du-paths.", "py_week4": "Previous Year Assignment Archive • Method call sequences and sequencing constraints.", "py_week5": "Previous Year Assignment Archive • Predicates, clauses, and logic coverage criteria.", "py_week6": "Previous Year Assignment Archive • Correlated Active Clause Coverage and predicates.", "py_week7": "Previous Year Assignment Archive • Input domain modeling and partitioning criteria.", "py_week8": "Previous Year Assignment Archive • Grammars, languages, and mutation testing operators.", "py_week9": "Previous Year Assignment Archive • Inter-procedural mutation and object-oriented mutation.", "py_week10": "Previous Year Assignment Archive • Web applications, finite state machines, and statecharts.", "py_week11": "Previous Year Assignment Archive • Symbolic execution, path constraints, and solvers.", "py_week12": "Previous Year Assignment Archive • Non-functional testing criteria and object-oriented data flow."};
 
-        const weekSubtitles = {
-            1: "Interactive matching practice quiz for fundamental definitions and concepts.",
-            2: "Interactive practice test with control flow graph coverage and explanations.",
-            3: "Interactive practice test with data flow coverage and def-use pairs.",
-            4: "Interactive practice test with call graphs and sequencing constraints.",
-            5: "Interactive practice test with logic coverage and predicate criteria.",
-            6: "Interactive practice test with Correlated Active Clause Coverage criteria.",
-            7: "Interactive practice test with input domain modeling and partitioning criteria.",
-            8: "Interactive practice test with mutation testing and regular expressions.",
-            9: "Interactive practice test with integration and advanced mutation testing.",
-            10: "Interactive practice test with web applications and object-oriented testing.",
-            11: "Interactive practice test with symbolic execution and concolic testing.",
-            12: "Interactive practice test with non-functional testing and OO data flow."
-        };
-
-        function switchWeek(weekNum, btn) {
+        function switchWeek(sectionId, btn) {
             document.querySelectorAll('.week-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
 
-            document.getElementById(`week${weekNum}`).classList.add('active');
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) targetSection.classList.add('active');
+
             if (btn) {
                 btn.classList.add('active');
             } else {
-                const targetBtn = document.querySelector(`.nav-btn[data-week="${weekNum}"]`);
+                const targetBtn = document.querySelector(`.nav-btn[data-section="${sectionId}"]`);
                 if (targetBtn) targetBtn.classList.add('active');
             }
 
-            document.getElementById('pageTitle').innerText = weekTitles[weekNum];
-            document.getElementById('pageSubtitle').innerText = weekSubtitles[weekNum];
+            if (titlesMap[sectionId]) {
+                document.getElementById('pageTitle').innerText = titlesMap[sectionId];
+            }
+            if (subsMap[sectionId]) {
+                document.getElementById('pageSubtitle').innerText = subsMap[sectionId];
+            }
+
             document.querySelector('.main-content').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterCategory(cat, tabBtn) {
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            tabBtn.classList.add('active');
+
+            const groupCur = document.getElementById('group-cur');
+            const groupPy = document.getElementById('group-py');
+            const headCur = document.getElementById('header-cur');
+            const headPy = document.getElementById('header-py');
+
+            if (cat === 'all') {
+                groupCur.style.display = 'block';
+                groupPy.style.display = 'block';
+                headCur.style.display = 'block';
+                headPy.style.display = 'block';
+            } else if (cat === 'cur') {
+                groupCur.style.display = 'block';
+                groupPy.style.display = 'none';
+                headCur.style.display = 'block';
+                headPy.style.display = 'none';
+            } else if (cat === 'py') {
+                groupCur.style.display = 'none';
+                groupPy.style.display = 'block';
+                headCur.style.display = 'none';
+                headPy.style.display = 'block';
+            }
         }
 
         function toggleZoom(img) {
@@ -1655,7 +4729,7 @@
             let answeredCount = 0;
 
             cards.forEach((card) => {
-                const correctAnswer = card.getAttribute('data-correct').trim();
+                const correctAnswer = card.getAttribute('data-correct').trim().toLowerCase();
                 const selected = card.querySelector('input[type="radio"]:checked');
                 const feedbackDiv = card.querySelector('.feedback-text');
                 const explanationDiv = card.querySelector('.explanation');
@@ -1664,7 +4738,8 @@
 
                 if (selected) {
                     answeredCount++;
-                    if (selected.value.trim() === correctAnswer) {
+                    const userVal = selected.value.trim().toLowerCase();
+                    if (userVal === correctAnswer) {
                         score++;
                         feedbackDiv.innerHTML = "<span style='color: #166534;'>✔ Correct!</span>";
                     } else {
